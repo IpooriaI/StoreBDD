@@ -317,6 +317,8 @@ __pycache__/
 *.jmconfig
 
 # BizTalk build output
+*.ncrunchsolution.user
+*.ncrunchsolution
 *.btp.cs
 *.btm.cs
 *.odx.cs
