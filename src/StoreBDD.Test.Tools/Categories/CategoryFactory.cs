@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StoreBDD.Test.Tools.Categories
 {
-    public class CategoryFactory
+    public static class CategoryFactory
     {
         public static AddCategoryDto GenerateAddCategoryDto(string title)
         {

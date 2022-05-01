@@ -8,6 +8,7 @@ using StoreBDD.Services.Categories;
 using StoreBDD.Services.Categories.Contracts;
 using StoreBDD.Services.Categories.Exceptions;
 using StoreBDD.Test.Tools.Categories;
+using StoreBDD.Test.Tools.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,6 +108,30 @@ namespace StoreBDD.Services.Test.Unit.Categories
 
             _dataContext.Categories.Count().Should().Be(0);
             _dataContext.Categories.Should().NotContain(category);
+        }
+
+        [Fact]
+        public void Delete_throws_exception_CategoryNotFoundException_if_category_dosnt_exist()
+        {
+            var fakeCategoryId = 20;
+            var dto = CategoryFactory.GenerateUpdateCategoryDto("TestTitle");
+
+            Action expected = () => _sut.Delete(fakeCategoryId);
+
+            expected.Should().ThrowExactly<CategoryNotFoundException>();
+        }
+
+        [Fact]
+        public void Delete_throws_exception_CategoryHasProductsException_if_category_has_products_inside()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory.GenerateProduct("Test",category.Id);
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+
+            Action expected = () => _sut.Delete(category.Id);
+
+            expected.Should().ThrowExactly<CategoryHasProductsException>();
         }
     }
 }

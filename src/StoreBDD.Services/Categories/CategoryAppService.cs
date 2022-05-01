@@ -47,7 +47,10 @@ namespace StoreBDD.Services.Categories
             {
                 throw new CategoryNotFoundException();
             }
-
+            if (category.Products != null)
+            {
+                throw new CategoryHasProductsException();
+            }
             _repository.Delete(category);
             _unitOfWork.Commit();
         }
