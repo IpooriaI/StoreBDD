@@ -21,4 +21,9 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\StoreBDD.Persistence.EF\StoreBDD.Persistence.EF.csproj" />
+	  <ProjectReference Include="..\StoreBDD.Test.Tools\StoreBDD.Test.Tools.csproj" />
+	</ItemGroup>
+
 </Project>
