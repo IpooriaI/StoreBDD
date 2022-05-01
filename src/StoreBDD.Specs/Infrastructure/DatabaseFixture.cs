@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Transactions;
 
-namespace BookStore.Specs.Infrastructure
+namespace StoreBDD.Specs.Infrastructure
 {
     public class DatabaseFixture : IDisposable
     {

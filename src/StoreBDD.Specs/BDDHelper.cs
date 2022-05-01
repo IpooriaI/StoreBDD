@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using BookStore.Infrastructure;
+using StoreBDD.Infrastructure;
 
-namespace BookStore.Specs
+namespace StoreBDD.Specs
 {
     public class BDDHelper
     {

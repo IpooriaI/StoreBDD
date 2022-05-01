@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
-namespace BookStore.Specs.Infrastructure
+namespace StoreBDD.Specs.Infrastructure
 {
     public class ConfigurationFixture
     {

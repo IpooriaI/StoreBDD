@@ -1,7 +1,7 @@
-﻿using BookStore.Persistence.EF;
+﻿using StoreBDD.Persistence.EF;
 using Xunit;
 
-namespace BookStore.Specs.Infrastructure
+namespace StoreBDD.Specs.Infrastructure
 {
     [Collection(nameof(ConfigurationFixture))]
     public class EFDataContextDatabaseFixture : DatabaseFixture

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -24,6 +24,12 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\StoreBDD.Infrastructure\StoreBDD.Infrastructure.csproj" />
+		<ProjectReference Include="..\StoreBDD.Persistence.EF\StoreBDD.Persistence.EF.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

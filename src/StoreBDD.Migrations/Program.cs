@@ -5,7 +5,7 @@ using System;
 using System.Data.SqlClient;
 using System.IO;
 
-namespace BookStore.Migrations
+namespace StoreBDD.Migrations
 {
     internal class Program
     {
@@ -57,7 +57,7 @@ namespace BookStore.Migrations
                     .AddSqlServer()
                     .WithGlobalConnectionString(connectionString)
                     .ScanIn(typeof(Program).Assembly).For.All())
-                .AddSingleton<MigrationSettings>(options)
+                .AddSingleton(options)
                 .AddLogging(_ => _.AddFluentMigratorConsole())
                 .BuildServiceProvider();
             return container.GetRequiredService<IMigrationRunner>();
