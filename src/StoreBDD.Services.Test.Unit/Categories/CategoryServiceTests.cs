@@ -1,10 +1,12 @@
 ﻿using FluentAssertions;
+using StoreBDD.Entities;
 using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.Categories;
 using StoreBDD.Services.Categories;
 using StoreBDD.Services.Categories.Contracts;
+using StoreBDD.Services.Categories.Exceptions;
 using StoreBDD.Test.Tools.Categories;
 using System;
 using System.Collections.Generic;
@@ -35,7 +37,8 @@ namespace StoreBDD.Services.Test.Unit.Categories
         [Fact]
         public void Add_adds_category_properly()
         {
-            AddCategoryDto dto = CategoryFactory.GenerateAddCategoryDto();
+            AddCategoryDto dto = CategoryFactory
+                .GenerateAddCategoryDto("Dummy");
 
             _sut.Add(dto);
 
@@ -43,8 +46,20 @@ namespace StoreBDD.Services.Test.Unit.Categories
             _dataContext.Categories.Should().Contain(_ => _.Title == dto.Title);
         }
 
+        [Fact]
+        public void Add_throws_DuplicateCategoryTitle_when_category_with_the_same_title_already_exists()
+        {
+            var category = new Category
+            {
+                Title = "DummyTitle"
+            };
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var dto = CategoryFactory.GenerateAddCategoryDto(category.Title);
 
+            Action expected =()=> _sut.Add(dto);
 
+            expected.Should().ThrowExactly<DuplicateCategoryTitleException>();
+        }
 
     }
 }

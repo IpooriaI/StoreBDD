@@ -9,11 +9,11 @@ namespace StoreBDD.Test.Tools.Categories
 {
     public class CategoryFactory
     {
-        public static AddCategoryDto GenerateAddCategoryDto()
+        public static AddCategoryDto GenerateAddCategoryDto(string title)
         {
             return new AddCategoryDto
             {
-                Title = "dummy"
+                Title = title
             };
         }
 
