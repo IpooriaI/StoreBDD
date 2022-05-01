@@ -11,5 +11,6 @@ namespace StoreBDD.Services.Categories.Contracts
     {
         void Add(AddCategoryDto dto);
         void Update(int id, UpdateCategoryDto dto);
+        void Delete(int id);
     }
 }

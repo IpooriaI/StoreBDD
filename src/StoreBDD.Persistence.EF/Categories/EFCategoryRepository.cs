@@ -27,6 +27,11 @@ namespace StoreBDD.Persistence.EF.Categories
             return _dataContext.Categories.Any(_ => _.Title == title);
         }
 
+        public void Delete(Category category)
+        {
+            _dataContext.Categories.Remove(category);
+        }
+
         public Category GetById(int id)
         {
             return _dataContext.Categories.FirstOrDefault(c => c.Id == id);

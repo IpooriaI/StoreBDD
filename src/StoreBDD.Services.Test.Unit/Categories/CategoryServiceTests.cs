@@ -96,5 +96,17 @@ namespace StoreBDD.Services.Test.Unit.Categories
 
             expected.Should().ThrowExactly<CategoryNotFoundException>();
         }
+
+        [Fact]
+        public void Delete_deletes_category_properly()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+
+            _sut.Delete(category.Id);
+
+            _dataContext.Categories.Count().Should().Be(0);
+            _dataContext.Categories.Should().NotContain(category);
+        }
     }
 }

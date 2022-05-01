@@ -39,6 +39,19 @@ namespace StoreBDD.Services.Categories
             _unitOfWork.Commit();
         }
 
+        public void Delete(int id)
+        {
+            var category = _repository.GetById(id);
+
+            if (category == null)
+            {
+                throw new CategoryNotFoundException();
+            }
+
+            _repository.Delete(category);
+            _unitOfWork.Commit();
+        }
+
         public void Update(int id, UpdateCategoryDto dto)
         {
             var category = _repository.GetById(id);
