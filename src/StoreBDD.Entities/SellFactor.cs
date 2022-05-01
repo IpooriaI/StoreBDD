@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace StoreBDD.Entities
 {
-    public class BuyHistory
+    public class SellFactor
     {
         public int Count { get; set; }
         public int ProductId { get; set; }
         public Product Product { get; set; }
-        public DateTime DateBought { get; set; }
+        public DateTime DateSold { get; set; }
     }
 }

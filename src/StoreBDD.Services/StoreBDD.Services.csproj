@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BuyHistories\Contracts\" />
+    <Folder Include="BuyHistories\Contracts\Dto\" />
     <Folder Include="BuyHistories\Exceptions\" />
-    <Folder Include="Categories\Contracts\" />
+    <Folder Include="Categories\Contracts\Dto\" />
     <Folder Include="Categories\Exceptions\" />
-    <Folder Include="Products\Contracts\" />
+    <Folder Include="Products\Contracts\Dto\" />
     <Folder Include="Products\Exceptions\" />
-    <Folder Include="SellHistories\Contracts\" />
+    <Folder Include="SellHistories\Contracts\Dto\" />
     <Folder Include="SellHistories\Exceptions\" />
   </ItemGroup>
 
