@@ -14,5 +14,7 @@ namespace StoreBDD.Services.Categories.Contracts
         bool CheckTitle(string title);
         Category GetById(int id);
         void Delete(Category category);
+        List<GetCategoryDto> GetAll();
+        GetCategoryDto Get(int id);
     }
 }

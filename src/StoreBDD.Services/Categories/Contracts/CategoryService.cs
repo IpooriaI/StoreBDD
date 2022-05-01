@@ -1,4 +1,5 @@
-﻿using StoreBDD.Infrastructure.Application;
+﻿using StoreBDD.Entities;
+using StoreBDD.Infrastructure.Application;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace StoreBDD.Services.Categories.Contracts
         void Add(AddCategoryDto dto);
         void Update(int id, UpdateCategoryDto dto);
         void Delete(int id);
+        GetCategoryDto Get(int id);
+        List<GetCategoryDto> GetAll();
     }
 }

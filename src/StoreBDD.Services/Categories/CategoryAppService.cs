@@ -55,6 +55,16 @@ namespace StoreBDD.Services.Categories
             _unitOfWork.Commit();
         }
 
+        public GetCategoryDto Get(int id)
+        {
+            return _repository.Get(id);
+        }
+
+        public List<GetCategoryDto> GetAll()
+        {
+            return _repository.GetAll();
+        }
+
         public void Update(int id, UpdateCategoryDto dto)
         {
             var category = _repository.GetById(id);

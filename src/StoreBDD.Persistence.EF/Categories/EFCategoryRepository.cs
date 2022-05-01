@@ -1,5 +1,6 @@
 ﻿using StoreBDD.Entities;
 using StoreBDD.Services.Categories.Contracts;
+using StoreBDD.Services.Products.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,41 @@ namespace StoreBDD.Persistence.EF.Categories
         public void Delete(Category category)
         {
             _dataContext.Categories.Remove(category);
+        }
+
+        public GetCategoryDto Get(int id)
+        {
+            return _dataContext.Categories
+                .Where(_ => _.Id == id)
+                .Select(_ => new GetCategoryDto
+            {
+                Title = _.Title,
+                Products =_.Products.Select(_ => new GetProductDto
+                {
+                    Name = _.Name,
+                    Count = _.Count,
+                    Price = _.Price,
+                    MinimumCount = _.MinimumCount,
+                    CategoryId = _.CategoryId,
+                }).ToList()
+            }).FirstOrDefault();
+        }
+
+        public List<GetCategoryDto> GetAll()
+        {
+            return _dataContext.Categories.Select(_ => new GetCategoryDto
+            {
+                Title = _.Title,
+                Products =_.Products.Select(_ => new GetProductDto
+                {
+                    Name = _.Name,
+                    Count = _.Count,
+                    Price = _.Price,
+                    MinimumCount = _.MinimumCount,
+                    CategoryId = _.CategoryId,
+                }).ToList(),
+
+            }).ToList();
         }
 
         public Category GetById(int id)

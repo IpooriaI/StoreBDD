@@ -133,5 +133,36 @@ namespace StoreBDD.Services.Test.Unit.Categories
 
             expected.Should().ThrowExactly<CategoryHasProductsException>();
         }
+
+        [Fact]
+        public void Get_returns_a_category_and_its_products_properly()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+
+            var expected = _sut.Get(category.Id);
+
+            expected.Title.Should().Be(category.Title);
+            expected.Products[0].Name.Should().Be(product.Name);
+        }
+
+        [Fact]
+        public void GetAll_returns_all_categories_and_thier_products_properly()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            var category2 = CategoryFactory.GenerateCategory("DummyTitle2");
+            _dataContext.Manipulate(_ => _.Categories
+                .AddRange(category,category2));
+            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            var product2 = ProductFactory.GenerateProduct("Test2", category2.Id);
+            _dataContext.Manipulate(_ => _.Products.AddRange(product,product2));
+
+            var expected = _sut.GetAll();
+
+            expected.Should().Contain(_ => _.Title == category.Title);
+            expected.Should().Contain(_ => _.Title == category2.Title);
+        }
     }
 }
