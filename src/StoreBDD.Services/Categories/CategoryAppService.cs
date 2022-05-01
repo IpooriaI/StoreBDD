@@ -1,6 +1,7 @@
 ﻿using StoreBDD.Entities;
 using StoreBDD.Infrastructure.Application;
 using StoreBDD.Services.Categories.Contracts;
+using StoreBDD.Services.Categories.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,13 @@ namespace StoreBDD.Services.Categories
             {
                 Title = dto.Title,
             };
+
+            var checkTitle = _repository.CheckTitle(dto.Title);
+
+            if (checkTitle)
+            {
+                throw new DuplicateCategoryTitleException();
+            }
 
             _repository.Add(category);
             _unitOfWork.Commit();

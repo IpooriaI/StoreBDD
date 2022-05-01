@@ -21,5 +21,10 @@ namespace StoreBDD.Persistence.EF.Categories
         {
             _dataContext.Categories.Add(category);       
         }
+
+        public bool CheckTitle(string title)
+        {
+            return _dataContext.Categories.Any(_ => _.Title == title);
+        }
     }
 }

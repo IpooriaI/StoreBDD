@@ -11,5 +11,6 @@ namespace StoreBDD.Services.Categories.Contracts
     public interface CategoryRepository : Repository
     {
         void Add(Category category);
+        bool CheckTitle(string title);
     }
 }
