@@ -42,6 +42,17 @@ namespace StoreBDD.Services.Categories
         public void Update(int id, UpdateCategoryDto dto)
         {
             var category = _repository.GetById(id);
+            var checkTitle = _repository.CheckTitle(dto.Title);
+
+            if (category == null)
+            {
+                throw new CategoryNotFoundException();
+            }
+
+            if (checkTitle)
+            {
+                throw new DuplicateCategoryTitleException();
+            }
 
             category.Title = dto.Title;
 

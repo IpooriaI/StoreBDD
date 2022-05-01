@@ -71,5 +71,30 @@ namespace StoreBDD.Services.Test.Unit.Categories
                 .FirstOrDefault(_ => _.Id == category.Id);
             excpected.Title.Should().Be(dto.Title);
         }
+
+        [Fact]
+        public void Update_throws_DuplicateCategoryTitle_when_category_with_the_same_title_already_exists()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var SecondCategory = CategoryFactory.GenerateCategory("DummyTitle2");
+            _dataContext.Manipulate(_ => _.Categories.Add(SecondCategory));
+            var dto = CategoryFactory.GenerateUpdateCategoryDto(category.Title);
+
+            Action expected = () => _sut.Update(SecondCategory.Id,dto);
+
+            expected.Should().ThrowExactly<DuplicateCategoryTitleException>();
+        }
+
+        [Fact]
+        public void Update_throws_exception_CategoryNotFoundException_if_category_dosnt_exist()
+        {
+            var fakeCategoryId = 20;
+            var dto = CategoryFactory.GenerateUpdateCategoryDto("TestTitle");
+
+            Action expected = () => _sut.Update(fakeCategoryId, dto);
+
+            expected.Should().ThrowExactly<CategoryNotFoundException>();
+        }
     }
 }
