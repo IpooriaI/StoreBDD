@@ -63,15 +63,13 @@ namespace StoreBDD.Services.Test.Unit.Categories
         {
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var dto = new UpdateCategoryDto
-            {
-                Title = "test"
-            };
+            var dto = CategoryFactory.GenerateUpdateCategoryDto("UpdatedTitle");
 
             _sut.Update(category.Id, dto);
 
-            _dataContext.Categories.Should().HaveCount(1);
-            _dataContext.Categories.Should().Contain(_ => _.Title == dto.Title);
+            var excpected = _dataContext.Categories
+                .FirstOrDefault(_ => _.Id == category.Id);
+            excpected.Title.Should().Be(dto.Title);
         }
     }
 }

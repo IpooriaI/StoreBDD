@@ -25,5 +25,12 @@ namespace StoreBDD.Test.Tools.Categories
             };
         }
 
+        public static UpdateCategoryDto GenerateUpdateCategoryDto(string title)
+        {
+            return new UpdateCategoryDto
+            {
+                Title = title
+            };
+        }
     }
 }
