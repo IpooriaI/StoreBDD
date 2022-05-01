@@ -5,14 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BuyHistories\Contracts\Dto\" />
-    <Folder Include="BuyHistories\Exceptions\" />
-    <Folder Include="Categories\Contracts\Dto\" />
+    <Folder Include="BuyFactors\Contracts\" />
+    <Folder Include="BuyFactors\Exceptions\" />
     <Folder Include="Categories\Exceptions\" />
-    <Folder Include="Products\Contracts\Dto\" />
+    <Folder Include="Products\Contracts\" />
     <Folder Include="Products\Exceptions\" />
-    <Folder Include="SellHistories\Contracts\Dto\" />
-    <Folder Include="SellHistories\Exceptions\" />
+    <Folder Include="SellFactors\Contracts\" />
+    <Folder Include="SellFactors\Exceptions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StoreBDD.Entities\StoreBDD.Entities.csproj" />
+    <ProjectReference Include="..\StoreBDD.Infrastructure\StoreBDD.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

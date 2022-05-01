@@ -30,6 +30,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\StoreBDD.Infrastructure\StoreBDD.Infrastructure.csproj" />
 		<ProjectReference Include="..\StoreBDD.Persistence.EF\StoreBDD.Persistence.EF.csproj" />
+		<ProjectReference Include="..\StoreBDD.Services\StoreBDD.Services.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

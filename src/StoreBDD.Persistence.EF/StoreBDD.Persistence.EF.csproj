@@ -12,6 +12,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\StoreBDD.Entities\StoreBDD.Entities.csproj" />
 	  <ProjectReference Include="..\StoreBDD.Infrastructure\StoreBDD.Infrastructure.csproj" />
+	  <ProjectReference Include="..\StoreBDD.Services\StoreBDD.Services.csproj" />
 	</ItemGroup>
 
 </Project>
