@@ -1,4 +1,5 @@
-﻿using StoreBDD.Services.Categories.Contracts;
+﻿using StoreBDD.Entities;
+using StoreBDD.Services.Categories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,13 @@ namespace StoreBDD.Test.Tools.Categories
                 Title = title
             };
         }
-
+        public static Category GenerateCategory(string title)
+        {
+            return new Category
+            {
+                Title = title
+            };
+        }
 
     }
 }

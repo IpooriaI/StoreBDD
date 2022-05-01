@@ -12,5 +12,6 @@ namespace StoreBDD.Services.Categories.Contracts
     {
         void Add(Category category);
         bool CheckTitle(string title);
+        Category GetById(int id);
     }
 }

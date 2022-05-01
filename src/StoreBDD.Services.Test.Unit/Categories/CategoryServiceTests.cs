@@ -49,10 +49,7 @@ namespace StoreBDD.Services.Test.Unit.Categories
         [Fact]
         public void Add_throws_DuplicateCategoryTitle_when_category_with_the_same_title_already_exists()
         {
-            var category = new Category
-            {
-                Title = "DummyTitle"
-            };
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
             var dto = CategoryFactory.GenerateAddCategoryDto(category.Title);
 
@@ -61,5 +58,20 @@ namespace StoreBDD.Services.Test.Unit.Categories
             expected.Should().ThrowExactly<DuplicateCategoryTitleException>();
         }
 
+        [Fact]
+        public void Update_updates_the_category_properly()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var dto = new UpdateCategoryDto
+            {
+                Title = "test"
+            };
+
+            _sut.Update(category.Id, dto);
+
+            _dataContext.Categories.Should().HaveCount(1);
+            _dataContext.Categories.Should().Contain(_ => _.Title == dto.Title);
+        }
     }
 }
