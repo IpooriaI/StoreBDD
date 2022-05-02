@@ -84,5 +84,36 @@ namespace StoreBDD.Services.Test.Unit.Products
             _dataContext.Products.Should()
                 .Contain(_ => _.MinimumCount == dto.MinimumCount);
         }
+
+        [Fact]
+        public void Update_throws_exception_DuplicateProductNameInSameCategoryException_if_product_with_same_name_exists()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            var product2 = ProductFactory.GenerateProduct("Test2", category.Id);
+            _dataContext.Manipulate(_ => _.Products.AddRange(product,product2));
+            var dto = ProductFactory
+                .GenerateUpdateProductDto(product2.Name, category.Id);
+
+            Action expected =()=> _sut.Update(product.Id, dto);
+
+            expected.Should()
+                .ThrowExactly<DuplicateProductNameInSameCategoryException>();
+        }
+
+        [Fact]
+        public void Update_throws_exception_ProductNotFoundException_if_product_dosnt_exist()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var fakeProductId = 20;
+            var dto = ProductFactory
+                .GenerateUpdateProductDto("Dummy", category.Id);
+
+            Action expected =()=> _sut.Update(fakeProductId, dto);
+
+            expected.Should().ThrowExactly<ProductNotFoundException>();
+        }
     }
 }

@@ -44,6 +44,19 @@ namespace StoreBDD.Services.Products
         {
             var product = _repository.GetById(id);
 
+            if(product==null)
+            {
+                throw new ProductNotFoundException();
+            }
+
+            var checkName = _repository.CheckName(product.CategoryId, dto.Name);
+
+
+            if (checkName)
+            {
+                throw new DuplicateProductNameInSameCategoryException();
+            }
+
             product.Name = dto.Name;
             product.MinimumCount = dto.MinimumCount;
             product.Count = dto.Count;

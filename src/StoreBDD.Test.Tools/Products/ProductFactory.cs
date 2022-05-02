@@ -34,7 +34,7 @@ namespace StoreBDD.Test.Tools.Products
         {
             return new UpdateProductDto
             {
-                Name = name+"Updated",
+                Name = name,
                 MinimumCount = 5,
                 Price = 5400,
                 CategoryId = categoryId,
