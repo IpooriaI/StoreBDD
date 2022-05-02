@@ -2,11 +2,7 @@
 using StoreBDD.Infrastructure.Application;
 using StoreBDD.Services.Categories.Contracts;
 using StoreBDD.Services.Categories.Exceptions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreBDD.Services.Categories
 {

@@ -1,10 +1,6 @@
-﻿using StoreBDD.Infrastructure.Application;
+﻿using StoreBDD.Entities;
+using StoreBDD.Infrastructure.Application;
 using StoreBDD.Services.Products.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreBDD.Services.Products
 {
@@ -20,6 +16,19 @@ namespace StoreBDD.Services.Products
             _unitOfWork = unitOfWork;
         }
 
+        public void Add(AddProductDto dto)
+        {
+            var product = new Product
+            {
+                Name = dto.Name,
+                MinimumCount = dto.MinimumCount,
+                Count = 0,
+                Price = dto.Price,
+                CategoryId = dto.CategoryId,
+            };
 
+            _repository.Add(product);
+            _unitOfWork.Commit();
+        }
     }
 }

@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentAssertions;
 using StoreBDD.Entities;
+using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.Categories;
+using StoreBDD.Services.Categories;
+using StoreBDD.Services.Categories.Contracts;
+using StoreBDD.Services.Categories.Exceptions;
 using StoreBDD.Specs.Infrastructure;
-using FluentAssertions;
+using System;
 using Xunit;
 using static StoreBDD.Specs.BDDHelper;
-using StoreBDD.Services.Categories.Contracts;
-using StoreBDD.Services.Categories;
-using StoreBDD.Infrastructure.Application;
-using StoreBDD.Services.Categories.Exceptions;
 
 namespace StoreBDD.Specs.Categories
 {
-        [Scenario("مدیریت دسته بندی")]
-        [Feature("",
+    [Scenario("مدیریت دسته بندی")]
+    [Feature("",
         AsA = "فروشنده ",
         IWantTo = "دسته بندی کالا مدیریت کنم",
         InOrderTo = "کالا های خود را دسته بندی کنم"
@@ -34,7 +30,7 @@ namespace StoreBDD.Specs.Categories
         private Category _category;
         private Category _secondCategory;
         Action expected;
-        public UpdateCategoryWithDuplicateTitle(ConfigurationFixture 
+        public UpdateCategoryWithDuplicateTitle(ConfigurationFixture
             configuration) : base(configuration)
         {
             _dataContext = CreateDataContext();
@@ -73,7 +69,7 @@ namespace StoreBDD.Specs.Categories
                 Title = "خشکبار"
             };
 
-            expected =()=> _sut.Update(_category.Id, _dto);
+            expected = () => _sut.Update(_category.Id, _dto);
         }
 
 

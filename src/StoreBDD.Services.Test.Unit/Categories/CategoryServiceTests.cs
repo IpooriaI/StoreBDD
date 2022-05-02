@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using StoreBDD.Entities;
 using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
@@ -10,15 +9,12 @@ using StoreBDD.Services.Categories.Exceptions;
 using StoreBDD.Test.Tools.Categories;
 using StoreBDD.Test.Tools.Products;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace StoreBDD.Services.Test.Unit.Categories
 {
-    public class CategoryServiceTests 
+    public class CategoryServiceTests
     {
         private readonly EFDataContext _dataContext;
         private readonly UnitOfWork _unitOfWork;
@@ -54,7 +50,7 @@ namespace StoreBDD.Services.Test.Unit.Categories
             _dataContext.Manipulate(_ => _.Categories.Add(category));
             var dto = CategoryFactory.GenerateAddCategoryDto(category.Title);
 
-            Action expected =()=> _sut.Add(dto);
+            Action expected = () => _sut.Add(dto);
 
             expected.Should().ThrowExactly<DuplicateCategoryTitleException>();
         }
@@ -82,7 +78,7 @@ namespace StoreBDD.Services.Test.Unit.Categories
             _dataContext.Manipulate(_ => _.Categories.Add(SecondCategory));
             var dto = CategoryFactory.GenerateUpdateCategoryDto(category.Title);
 
-            Action expected = () => _sut.Update(SecondCategory.Id,dto);
+            Action expected = () => _sut.Update(SecondCategory.Id, dto);
 
             expected.Should().ThrowExactly<DuplicateCategoryTitleException>();
         }
@@ -126,7 +122,7 @@ namespace StoreBDD.Services.Test.Unit.Categories
         {
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test",category.Id);
+            var product = ProductFactory.GenerateProduct("Test", category.Id);
             _dataContext.Manipulate(_ => _.Products.Add(product));
 
             Action expected = () => _sut.Delete(category.Id);
@@ -154,10 +150,10 @@ namespace StoreBDD.Services.Test.Unit.Categories
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             var category2 = CategoryFactory.GenerateCategory("DummyTitle2");
             _dataContext.Manipulate(_ => _.Categories
-                .AddRange(category,category2));
+                .AddRange(category, category2));
             var product = ProductFactory.GenerateProduct("Test", category.Id);
             var product2 = ProductFactory.GenerateProduct("Test2", category2.Id);
-            _dataContext.Manipulate(_ => _.Products.AddRange(product,product2));
+            _dataContext.Manipulate(_ => _.Products.AddRange(product, product2));
 
             var expected = _sut.GetAll();
 

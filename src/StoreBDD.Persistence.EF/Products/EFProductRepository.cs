@@ -1,9 +1,5 @@
-﻿using StoreBDD.Services.Products.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StoreBDD.Entities;
+using StoreBDD.Services.Products.Contracts;
 
 namespace StoreBDD.Persistence.EF.Products
 {
@@ -16,6 +12,9 @@ namespace StoreBDD.Persistence.EF.Products
             _dataContext = dataContext;
         }
 
-
+        public void Add(Product product)
+        {
+            _dataContext.Products.Add(product);
+        }
     }
 }

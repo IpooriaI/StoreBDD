@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentAssertions;
 using StoreBDD.Entities;
+using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.Categories;
+using StoreBDD.Services.Categories;
+using StoreBDD.Services.Categories.Contracts;
 using StoreBDD.Specs.Infrastructure;
-using FluentAssertions;
+using System.Linq;
 using Xunit;
 using static StoreBDD.Specs.BDDHelper;
-using StoreBDD.Services.Categories.Contracts;
-using StoreBDD.Services.Categories;
-using StoreBDD.Infrastructure.Application;
 
 namespace StoreBDD.Specs.Categories
 {
-        [Scenario("مدیریت دسته بندی")]
-        [Feature("",
+    [Scenario("مدیریت دسته بندی")]
+    [Feature("",
         AsA = "فروشنده ",
         IWantTo = "دسته بندی کالا مدیریت کنم",
         InOrderTo = "کالا های خود را دسته بندی کنم"
@@ -37,7 +33,7 @@ namespace StoreBDD.Specs.Categories
             _dataContext = CreateDataContext();
             _unitOfWork = new EFUnitOfWork(_dataContext);
             _repository = new EFCategoryRepository(_dataContext);
-            _sut = new CategoryAppService(_repository,_unitOfWork);
+            _sut = new CategoryAppService(_repository, _unitOfWork);
         }
 
         [Given("دسته بندی با عنوان 'لبنیات'در فهرست دسته بندی کالا وجود دارد")]

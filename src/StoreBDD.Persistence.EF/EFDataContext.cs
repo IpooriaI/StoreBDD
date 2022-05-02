@@ -1,11 +1,6 @@
-﻿using StoreBDD.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using StoreBDD.Entities;
 using StoreBDD.Persistence.EF.Categories;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreBDD.Persistence.EF
 {
@@ -15,7 +10,7 @@ namespace StoreBDD.Persistence.EF
         public EFDataContext(string connectionString) :
             this(new DbContextOptionsBuilder().UseSqlServer(connectionString).Options)
         { }
-       
+
         public EFDataContext(DbContextOptions options) : base(options)
         {
         }
@@ -23,13 +18,13 @@ namespace StoreBDD.Persistence.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
             modelBuilder.ApplyConfigurationsFromAssembly
                 (typeof(CategoryEntityMap).Assembly);
         }
-       
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        
+
     }
 }

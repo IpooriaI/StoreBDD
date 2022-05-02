@@ -1,11 +1,8 @@
 ﻿using StoreBDD.Entities;
 using StoreBDD.Services.Categories.Contracts;
 using StoreBDD.Services.Products.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreBDD.Persistence.EF.Categories
 {
@@ -20,7 +17,7 @@ namespace StoreBDD.Persistence.EF.Categories
 
         public void Add(Category category)
         {
-            _dataContext.Categories.Add(category);       
+            _dataContext.Categories.Add(category);
         }
 
         public bool CheckTitle(string title)
@@ -38,17 +35,17 @@ namespace StoreBDD.Persistence.EF.Categories
             return _dataContext.Categories
                 .Where(_ => _.Id == id)
                 .Select(_ => new GetCategoryDto
-            {
-                Title = _.Title,
-                Products =_.Products.Select(_ => new GetProductDto
                 {
-                    Name = _.Name,
-                    Count = _.Count,
-                    Price = _.Price,
-                    MinimumCount = _.MinimumCount,
-                    CategoryId = _.CategoryId,
-                }).ToList()
-            }).FirstOrDefault();
+                    Title = _.Title,
+                    Products = _.Products.Select(_ => new GetProductDto
+                    {
+                        Name = _.Name,
+                        Count = _.Count,
+                        Price = _.Price,
+                        MinimumCount = _.MinimumCount,
+                        CategoryId = _.CategoryId,
+                    }).ToList()
+                }).FirstOrDefault();
         }
 
         public List<GetCategoryDto> GetAll()
@@ -56,7 +53,7 @@ namespace StoreBDD.Persistence.EF.Categories
             return _dataContext.Categories.Select(_ => new GetCategoryDto
             {
                 Title = _.Title,
-                Products =_.Products.Select(_ => new GetProductDto
+                Products = _.Products.Select(_ => new GetProductDto
                 {
                     Name = _.Name,
                     Count = _.Count,

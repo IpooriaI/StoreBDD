@@ -34,11 +34,11 @@ namespace StoreBDD.RestAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Update(int id,UpdateCategoryDto dto)
+        public void Update(int id, UpdateCategoryDto dto)
         {
             _service.Update(id, dto);
         }
-        
+
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

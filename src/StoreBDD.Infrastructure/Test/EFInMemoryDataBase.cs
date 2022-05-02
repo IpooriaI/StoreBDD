@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Reflection;
 
 namespace StoreBDD.Infrastructure.Test
 {

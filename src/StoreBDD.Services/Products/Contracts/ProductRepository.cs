@@ -1,14 +1,10 @@
-﻿using StoreBDD.Infrastructure.Application;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StoreBDD.Entities;
+using StoreBDD.Infrastructure.Application;
 
 namespace StoreBDD.Services.Products.Contracts
 {
     public interface ProductRepository : Repository
     {
-
+        void Add(Product product);
     }
 }

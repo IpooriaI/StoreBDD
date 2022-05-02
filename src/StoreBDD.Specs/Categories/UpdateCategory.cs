@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentAssertions;
 using StoreBDD.Entities;
+using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.Categories;
+using StoreBDD.Services.Categories;
+using StoreBDD.Services.Categories.Contracts;
 using StoreBDD.Specs.Infrastructure;
-using FluentAssertions;
 using Xunit;
 using static StoreBDD.Specs.BDDHelper;
-using StoreBDD.Services.Categories.Contracts;
-using StoreBDD.Services.Categories;
-using StoreBDD.Infrastructure.Application;
 
 namespace StoreBDD.Specs.Categories
 {
-        [Scenario("مدیریت دسته بندی")]
-        [Feature("",
+    [Scenario("مدیریت دسته بندی")]
+    [Feature("",
         AsA = "فروشنده ",
         IWantTo = "دسته بندی کالا مدیریت کنم",
         InOrderTo = "کالا های خود را دسته بندی کنم"
@@ -59,7 +54,7 @@ namespace StoreBDD.Specs.Categories
                 Title = "خشکبار"
             };
 
-            _sut.Update(_category.Id,_dto);
+            _sut.Update(_category.Id, _dto);
         }
 
 
