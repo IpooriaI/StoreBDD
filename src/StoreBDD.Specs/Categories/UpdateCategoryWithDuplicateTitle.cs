@@ -18,6 +18,12 @@ using StoreBDD.Services.Categories.Exceptions;
 
 namespace StoreBDD.Specs.Categories
 {
+        [Scenario("مدیریت دسته بندی")]
+        [Feature("",
+        AsA = "فروشنده ",
+        IWantTo = "دسته بندی کالا مدیریت کنم",
+        InOrderTo = "کالا های خود را دسته بندی کنم"
+        )]
     public class UpdateCategoryWithDuplicateTitle : EFDataContextDatabaseFixture
     {
         private readonly CategoryService _sut;

@@ -18,10 +18,10 @@ using StoreBDD.Services.Categories.Exceptions;
 
 namespace StoreBDD.Specs.Categories
 {
-        [Scenario("تعریف دسته بندی")]
+        [Scenario("مدیریت دسته بندی")]
         [Feature("",
         AsA = "فروشنده ",
-        IWantTo = "دسته بندی کالا تعریف کنم",
+        IWantTo = "دسته بندی کالا مدیریت کنم",
         InOrderTo = "کالا های خود را دسته بندی کنم"
         )]
     public class AddCategoryWithDuplicateTitle : EFDataContextDatabaseFixture
