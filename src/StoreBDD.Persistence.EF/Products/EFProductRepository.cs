@@ -25,6 +25,11 @@ namespace StoreBDD.Persistence.EF.Products
                 .Any(_ => _.Name == name);
         }
 
+        public void Delete(Product product)
+        {
+            _dataContext.Products.Remove(product);
+        }
+
         public Product GetById(int id)
         {
             return _dataContext.Products.FirstOrDefault(p => p.Id == id);

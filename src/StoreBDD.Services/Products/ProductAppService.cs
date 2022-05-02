@@ -40,6 +40,19 @@ namespace StoreBDD.Services.Products
             _unitOfWork.Commit();
         }
 
+        public void Delete(int id)
+        {
+            var product = _repository.GetById(id);
+
+            if (product == null)
+            {
+                throw new ProductNotFoundException();
+            }
+
+            _repository.Delete(product);
+            _unitOfWork.Commit();
+        }
+
         public void Update(int id, UpdateProductDto dto)
         {
             var product = _repository.GetById(id);

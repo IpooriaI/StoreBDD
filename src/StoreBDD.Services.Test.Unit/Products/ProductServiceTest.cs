@@ -9,6 +9,7 @@ using StoreBDD.Services.Products.Exceptions;
 using StoreBDD.Test.Tools.Categories;
 using StoreBDD.Test.Tools.Products;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace StoreBDD.Services.Test.Unit.Products
@@ -112,6 +113,31 @@ namespace StoreBDD.Services.Test.Unit.Products
                 .GenerateUpdateProductDto("Dummy", category.Id);
 
             Action expected =()=> _sut.Update(fakeProductId, dto);
+
+            expected.Should().ThrowExactly<ProductNotFoundException>();
+        }
+
+        [Fact]
+        public void Delete_deletes_the_Product_properly()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+
+            _sut.Delete(product.Id);
+
+            _dataContext.Products.Count().Should().Be(0);
+            _dataContext.Products
+                .Should().NotContain(_ => _.Name == product.Name);
+        }
+
+        [Fact]
+        public void Delete_throws_exception_ProductNotFoundException_if_product_dosnt_exist()
+        {
+            var fakeProductId = 23;
+
+            Action expected = () => _sut.Delete(fakeProductId);
 
             expected.Should().ThrowExactly<ProductNotFoundException>();
         }
