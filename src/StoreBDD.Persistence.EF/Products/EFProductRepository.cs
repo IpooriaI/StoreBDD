@@ -24,5 +24,10 @@ namespace StoreBDD.Persistence.EF.Products
                 .Where(_ => _.CategoryId == categoryId)
                 .Any(_ => _.Name == name);
         }
+
+        public Product GetById(int id)
+        {
+            return _dataContext.Products.FirstOrDefault(p => p.Id == id);
+        }
     }
 }

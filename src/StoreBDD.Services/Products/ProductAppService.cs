@@ -39,5 +39,18 @@ namespace StoreBDD.Services.Products
             _repository.Add(product);
             _unitOfWork.Commit();
         }
+
+        public void Update(int id, UpdateProductDto dto)
+        {
+            var product = _repository.GetById(id);
+
+            product.Name = dto.Name;
+            product.MinimumCount = dto.MinimumCount;
+            product.Count = dto.Count;
+            product.Price = dto.Price;
+            product.CategoryId = dto.CategoryId;
+
+            _unitOfWork.Commit();
+        }
     }
 }

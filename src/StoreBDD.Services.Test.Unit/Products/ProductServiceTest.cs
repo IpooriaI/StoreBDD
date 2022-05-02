@@ -34,7 +34,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         {
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
-            AddProductDto dto = ProductFactory
+            var dto = ProductFactory
                 .GenerateAddProductDto("TestName", category.Id);
 
             _sut.Add(dto);
@@ -55,13 +55,34 @@ namespace StoreBDD.Services.Test.Unit.Products
             _dataContext.Manipulate(_ => _.Categories.Add(category));
             var product = ProductFactory.GenerateProduct("Test", category.Id);
             _dataContext.Manipulate(_ => _.Products.Add(product));
-            AddProductDto dto = ProductFactory
+            var dto = ProductFactory
                 .GenerateAddProductDto(product.Name, category.Id);
 
             Action expected =()=>  _sut.Add(dto);
 
             expected.Should()
                 .ThrowExactly<DuplicateProductNameInSameCategoryException>();
+        }
+
+        [Fact]
+        public void Update_updates_the_Product_properly()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+            var dto = ProductFactory
+                .GenerateUpdateProductDto("UpdatedName", category.Id);
+
+            _sut.Update(product.Id,dto);
+
+            _dataContext.Products.Should().HaveCount(1);
+            _dataContext.Products.Should().Contain(_ => _.Price == dto.Price);
+            _dataContext.Products.Should().Contain(_ => _.Name == dto.Name);
+            _dataContext.Products.Should()
+                .Contain(_ => _.CategoryId == dto.CategoryId);
+            _dataContext.Products.Should()
+                .Contain(_ => _.MinimumCount == dto.MinimumCount);
         }
     }
 }

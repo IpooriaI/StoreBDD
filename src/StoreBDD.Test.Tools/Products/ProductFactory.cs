@@ -28,5 +28,18 @@ namespace StoreBDD.Test.Tools.Products
                 CategoryId = categoryId,
             };
         }
+
+        public static UpdateProductDto GenerateUpdateProductDto
+            (string name, int categoryId)
+        {
+            return new UpdateProductDto
+            {
+                Name = name+"Updated",
+                MinimumCount = 5,
+                Price = 5400,
+                CategoryId = categoryId,
+                Count = 40,
+            };
+        }
     }
 }

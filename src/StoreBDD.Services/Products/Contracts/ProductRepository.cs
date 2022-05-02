@@ -7,5 +7,6 @@ namespace StoreBDD.Services.Products.Contracts
     {
         void Add(Product product);
         bool CheckName(int categoryId, string name);
+        Product GetById(int id);
     }
 }
