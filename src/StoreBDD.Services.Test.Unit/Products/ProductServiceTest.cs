@@ -5,8 +5,10 @@ using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.Products;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
+using StoreBDD.Services.Products.Exceptions;
 using StoreBDD.Test.Tools.Categories;
 using StoreBDD.Test.Tools.Products;
+using System;
 using Xunit;
 
 namespace StoreBDD.Services.Test.Unit.Products
@@ -46,6 +48,20 @@ namespace StoreBDD.Services.Test.Unit.Products
                 .Contain(_ => _.MinimumCount == dto.MinimumCount);
         }
 
+        [Fact]
+        public void Add_throws_exception_DuplicateProductNameInSameCategoryException_if_product_with_same_name_already_exists_in_this_category()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+            AddProductDto dto = ProductFactory
+                .GenerateAddProductDto(product.Name, category.Id);
 
+            Action expected =()=>  _sut.Add(dto);
+
+            expected.Should()
+                .ThrowExactly<DuplicateProductNameInSameCategoryException>();
+        }
     }
 }

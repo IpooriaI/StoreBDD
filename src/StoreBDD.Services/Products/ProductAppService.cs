@@ -1,6 +1,7 @@
 ﻿using StoreBDD.Entities;
 using StoreBDD.Infrastructure.Application;
 using StoreBDD.Services.Products.Contracts;
+using StoreBDD.Services.Products.Exceptions;
 
 namespace StoreBDD.Services.Products
 {
@@ -26,6 +27,14 @@ namespace StoreBDD.Services.Products
                 Price = dto.Price,
                 CategoryId = dto.CategoryId,
             };
+            var checkName = _repository
+                .CheckName(product.CategoryId, product.Name);
+
+            if(checkName)
+            {
+                throw new DuplicateProductNameInSameCategoryException();
+            }
+
 
             _repository.Add(product);
             _unitOfWork.Commit();
