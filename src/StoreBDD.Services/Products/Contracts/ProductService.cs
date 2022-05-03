@@ -9,5 +9,6 @@ namespace StoreBDD.Services.Products.Contracts
         void Delete(int id);
         GetProductDto Get(int id);
         void Sell(int id, SellProductDto dto);
+        void Buy(int id, BuyProductDto dto);
     }
 }

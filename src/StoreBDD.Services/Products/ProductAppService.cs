@@ -1,5 +1,6 @@
 ﻿using StoreBDD.Entities;
 using StoreBDD.Infrastructure.Application;
+using StoreBDD.Services.BuyFactors.Contracts;
 using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Services.Products.Exceptions;
 using StoreBDD.Services.SellFactors.Contracts;
@@ -11,14 +12,17 @@ namespace StoreBDD.Services.Products
     {
         private readonly ProductRepository _repository;
         private readonly SellFactorRepository _sellFactorRepository;
+        private readonly BuyFactorRepository _buyFactorRepository;
         private readonly UnitOfWork _unitOfWork;
 
         public ProductAppService(ProductRepository repository
-            , UnitOfWork unitOfWork,SellFactorRepository sellFactorRepository)
+            , UnitOfWork unitOfWork,SellFactorRepository sellFactorRepository,
+            BuyFactorRepository buyFactorRepository)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _sellFactorRepository = sellFactorRepository;
+            _buyFactorRepository = buyFactorRepository;
         }
 
         public void Add(AddProductDto dto)
@@ -57,6 +61,15 @@ namespace StoreBDD.Services.Products
             CheckIfProductCountIsEnough(product.Count, dto.SoldCount);
             product.Count -= dto.SoldCount;
             CreateSellFactor(dto.SoldCount,product.Id);
+
+            _unitOfWork.Commit();
+        }
+
+        public void Buy(int id, BuyProductDto dto)
+        {
+            var product = GetProduct(id);
+            product.Count += dto.BoughtCount;
+            CreateBuyFactor(dto.BoughtCount, product.Id);
 
             _unitOfWork.Commit();
         }
@@ -100,6 +113,18 @@ namespace StoreBDD.Services.Products
             _sellFactorRepository.Add(sellFactor);
         }
 
+        private void CreateBuyFactor(int boughtCount, int productId)
+        {
+            var buyFactor = new BuyFactor
+            {
+                ProductId = productId,
+                Count = boughtCount,
+                DateBought = DateTime.Now.Date,
+            };
+
+            _buyFactorRepository.Add(buyFactor);
+        }
+
         private void CheckIfNameIsDuplicate(int categoryId, string productName)
         {
             var checkName = _repository.CheckName(categoryId, productName);
@@ -117,5 +142,7 @@ namespace StoreBDD.Services.Products
                 throw new NotEnoughProductException();
             }
         }
+
+
     }
 }

@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BuyFactors\Contracts\" />
     <Folder Include="BuyFactors\Exceptions\" />
     <Folder Include="SellFactors\Exceptions\" />
   </ItemGroup>

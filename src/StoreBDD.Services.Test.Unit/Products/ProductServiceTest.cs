@@ -2,8 +2,10 @@
 using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
+using StoreBDD.Persistence.EF.BuyFactors;
 using StoreBDD.Persistence.EF.Products;
 using StoreBDD.Persistence.EF.SellFactors;
+using StoreBDD.Services.BuyFactors.Contracts;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Services.Products.Exceptions;
@@ -24,6 +26,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         private readonly ProductService _sut;
         private readonly ProductRepository _repository;
         private readonly SellFactorRepository _sellRepository;
+        private readonly BuyFactorRepository _buyRepository;
         public ProductServiceTest()
         {
             _dataContext =
@@ -32,8 +35,9 @@ namespace StoreBDD.Services.Test.Unit.Products
             _unitOfWork = new EFUnitOfWork(_dataContext);
             _repository = new EFProductRepository(_dataContext);
             _sellRepository = new EFSellFactorRepository(_dataContext);
+            _buyRepository = new EFBuyFactorRepository(_dataContext);
             _sut = new ProductAppService(_repository, 
-                _unitOfWork,_sellRepository);
+                _unitOfWork,_sellRepository,_buyRepository);
         }
 
         [Fact]
