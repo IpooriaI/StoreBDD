@@ -21,5 +21,17 @@ namespace StoreBDD.Persistence.EF.SellFactors
         {
             _dataContext.SellFactors.Add(sellFactor);
         }
+
+        public List<GetSellFactorDto> GetAll()
+        {
+            return _dataContext.SellFactors
+                .Select(_ => new GetSellFactorDto
+            {
+                Id = _.Id,
+                Count = _.Count,
+                DateSold = _.DateSold,
+                ProductId = _.ProductId,
+            }).ToList();
+        }
     }
 }

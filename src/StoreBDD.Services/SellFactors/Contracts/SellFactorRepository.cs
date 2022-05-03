@@ -11,5 +11,6 @@ namespace StoreBDD.Services.SellFactors.Contracts
     public interface SellFactorRepository : Repository
     {
         void Add(SellFactor sellFactor);
+        List<GetSellFactorDto> GetAll();
     }
 }
