@@ -41,5 +41,13 @@ namespace StoreBDD.Test.Tools.Products
                 Count = 40,
             };
         }
+
+        public static SellProductDto GenerateSellProductDto(int count)
+        {
+            return new SellProductDto
+            {
+                SoldCount = count 
+            };
+        }
     }
 }

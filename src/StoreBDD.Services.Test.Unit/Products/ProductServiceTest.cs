@@ -162,5 +162,27 @@ namespace StoreBDD.Services.Test.Unit.Products
             expected.CategoryId.Should().Be(product.CategoryId);
             expected.Price.Should().Be(product.Price);
         }
+
+        [Fact]
+        public void Sell_sells_the_Product_properly()
+        {
+            var category = CategoryFactory.GenerateCategory("لبنیات");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory
+                .GenerateProduct("ماست کاله", category.Id);
+            var count = product.Count;
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+            var dto = ProductFactory.GenerateSellProductDto(2);
+
+            _sut.Sell(product.Id, dto);
+
+            _dataContext.Products.Should()
+                .Contain(_ => _.Count == count - dto.SoldCount);
+            _dataContext.SellFactors.Should().HaveCount(1);
+            _dataContext.SellFactors.Should()
+                .Contain(_ => _.DateSold == DateTime.Now.Date);
+            _dataContext.SellFactors.Should()
+                .Contain(_ => _.Count == dto.SoldCount);
+        }
     }
 }
