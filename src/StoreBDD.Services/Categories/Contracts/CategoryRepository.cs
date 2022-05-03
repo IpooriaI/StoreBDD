@@ -7,7 +7,7 @@ namespace StoreBDD.Services.Categories.Contracts
     public interface CategoryRepository : Repository
     {
         void Add(Category category);
-        bool CheckTitle(string title);
+        bool CheckTitle(string title,int ignoreId);
         Category GetById(int id);
         void Delete(Category category);
         List<GetCategoryDto> GetAll();

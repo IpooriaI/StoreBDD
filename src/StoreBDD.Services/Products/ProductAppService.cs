@@ -24,7 +24,7 @@ namespace StoreBDD.Services.Products
             _sellFactorRepository = sellFactorRepository;
             _buyFactorRepository = buyFactorRepository;
         }
-
+        
         public void Add(AddProductDto dto)
         {
             var product = new Product
@@ -35,7 +35,7 @@ namespace StoreBDD.Services.Products
                 Price = dto.Price,
                 CategoryId = dto.CategoryId,
             };
-
+          
             CheckIfNameIsDuplicate(product.CategoryId,product.Name);
 
             _repository.Add(product);
@@ -58,6 +58,7 @@ namespace StoreBDD.Services.Products
         public void Sell(int id, SellProductDto dto)
         {
             var product = GetProduct(id);
+
             CheckIfProductCountIsEnough(product.Count, dto.SoldCount);
             product.Count -= dto.SoldCount;
             CreateSellFactor(dto.SoldCount,product.Id);
@@ -76,9 +77,9 @@ namespace StoreBDD.Services.Products
 
         public void Update(int id, UpdateProductDto dto)
         {
-            Product product = GetProduct(id);
+            var product = GetProduct(id);
 
-            CheckIfNameIsDuplicate(product.CategoryId, dto.Name);
+            CheckIfNameIsDuplicate(product.CategoryId, dto.Name ,product.Id);
 
             product.Name = dto.Name;
             product.MinimumCount = dto.MinimumCount;
@@ -125,9 +126,11 @@ namespace StoreBDD.Services.Products
             _buyFactorRepository.Add(buyFactor);
         }
 
-        private void CheckIfNameIsDuplicate(int categoryId, string productName)
+        private void CheckIfNameIsDuplicate(int categoryId, string productName
+            ,int ignoreId = 0)
         {
-            var checkName = _repository.CheckName(categoryId, productName);
+            var checkName = _repository.CheckName(categoryId, productName
+                ,ignoreId);
 
             if (checkName)
             {

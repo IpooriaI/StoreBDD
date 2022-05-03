@@ -18,10 +18,10 @@ namespace StoreBDD.Persistence.EF.Products
             _dataContext.Products.Add(product);
         }
 
-        public bool CheckName(int categoryId, string name)
+        public bool CheckName(int categoryId, string name ,int ignoreId)
         {
             return _dataContext.Products
-                .Where(_ => _.CategoryId == categoryId)
+                .Where(_ => _.CategoryId == categoryId && _.Id != ignoreId)
                 .Any(_ => _.Name == name);
         }
 
