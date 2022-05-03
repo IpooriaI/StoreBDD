@@ -7,6 +7,7 @@ using StoreBDD.Persistence.EF.Categories;
 using StoreBDD.Services.Categories;
 using StoreBDD.Services.Categories.Contracts;
 using StoreBDD.Specs.Infrastructure;
+using StoreBDD.Test.Tools.Categories;
 using Xunit;
 using static StoreBDD.Specs.BDDHelper;
 
@@ -38,10 +39,7 @@ namespace StoreBDD.Specs.Categories
         [Given("دسته بندی با عنوان 'لبنیات'در فهرست دسته بندی کالا وجود دارد")]
         public void Given()
         {
-            _category = new Category
-            {
-                Title = "لبنیات"
-            };
+            _category = CategoryFactory.GenerateCategory("لبنیات");
 
             _dataContext.Manipulate(_ => _.Categories.Add(_category));
         }
@@ -49,10 +47,7 @@ namespace StoreBDD.Specs.Categories
         [When("دسته بندی با عنوان 'لبنیات' را به 'خشکبار'ویرایش میکنم")]
         public void When()
         {
-            _dto = new UpdateCategoryDto
-            {
-                Title = "خشکبار"
-            };
+            _dto = CategoryFactory.GenerateUpdateCategoryDto("خشکبار");
 
             _sut.Update(_category.Id, _dto);
         }

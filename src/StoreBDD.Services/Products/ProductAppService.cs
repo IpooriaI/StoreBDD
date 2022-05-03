@@ -53,6 +53,11 @@ namespace StoreBDD.Services.Products
             _unitOfWork.Commit();
         }
 
+        public GetProductDto Get(int id)
+        {
+            return _repository.Get(id);
+        }
+
         public void Update(int id, UpdateProductDto dto)
         {
             var product = _repository.GetById(id);

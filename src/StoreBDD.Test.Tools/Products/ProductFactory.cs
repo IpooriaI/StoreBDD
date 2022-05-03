@@ -10,9 +10,9 @@ namespace StoreBDD.Test.Tools.Products
             return new Product
             {
                 Name = name,
-                Count = 5,
-                MinimumCount = 3,
-                Price = 3000,
+                Count = 20,
+                MinimumCount = 5,
+                Price = 5000,
                 CategoryId = categoryId,
             };
         }

@@ -5,6 +5,7 @@ using StoreBDD.Persistence.EF.Categories;
 using StoreBDD.Services.Categories;
 using StoreBDD.Services.Categories.Contracts;
 using StoreBDD.Specs.Infrastructure;
+using StoreBDD.Test.Tools.Categories;
 using System.Linq;
 using Xunit;
 using static StoreBDD.Specs.BDDHelper;
@@ -42,10 +43,7 @@ namespace StoreBDD.Specs.Categories
         [When("دسته بندی با عنوان 'لبنیات' تعریف میکنم")]
         public void When()
         {
-            _dto = new AddCategoryDto
-            {
-                Title = "لبنیات"
-            };
+            _dto = CategoryFactory.GenerateAddCategoryDto("لبنیات");
 
             _sut.Add(_dto);
         }

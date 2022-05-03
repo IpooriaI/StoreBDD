@@ -7,5 +7,6 @@ namespace StoreBDD.Services.Products.Contracts
         void Add(AddProductDto dto);
         void Update(int id, UpdateProductDto dto);
         void Delete(int id);
+        GetProductDto Get(int id);
     }
 }

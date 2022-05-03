@@ -8,6 +8,8 @@ using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Services.Products.Exceptions;
 using StoreBDD.Specs.Infrastructure;
+using StoreBDD.Test.Tools.Categories;
+using StoreBDD.Test.Tools.Products;
 using System;
 using System.Linq;
 using Xunit;
@@ -38,10 +40,7 @@ namespace StoreBDD.Specs.Products
         [Given("دسته بندی با عنوان 'لبنیات'در فهرست دسته بندی کالا وجود دارد")]
         public void Given()
         {
-            _category = new Category
-            {
-                Title = "لبنیات"
-            };
+            _category = CategoryFactory.GenerateCategory("لبنیات");
 
             _dataContext.Manipulate(_ => _.Categories.Add(_category));
         }
@@ -49,27 +48,17 @@ namespace StoreBDD.Specs.Products
         [And("کالایی با عنوان 'ماست کاله' و قیمت '5000' و تعداد '20' و حداقل موجودی '5' در دسته بندی 'لبنیات' وجود دارد")]
         public void GivenAnd()
         {
-            _product = new Product
-            {
-                Name = "ماست کاله",
-                Price = 5000,
-                Count = 20,
-                MinimumCount = 5,
-                CategoryId = _category.Id,
-            };
+            _product = ProductFactory
+                .GenerateProduct("ماست کاله", _category.Id); 
+
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }
 
         [When("کالایی با عنوان 'ماست کاله' و قیمت '3000' و تعداد '43' به دسته بندی 'لبنیات' اضافه میکنیم")]
         public void When()
         {
-            _dto = new AddProductDto
-            {
-                Name = "ماست کاله",
-                MinimumCount = 5,
-                Price = 5000,
-                CategoryId = _category.Id
-            };
+            _dto = ProductFactory.GenerateAddProductDto("ماست کاله", _category.Id);
+
 
             expected =()=> _sut.Add(_dto);
         }
@@ -79,13 +68,13 @@ namespace StoreBDD.Specs.Products
         {
             _dataContext.Products.Count().Should().Be(1);
             _dataContext.Products
-                .Should().Contain(_ => _.Name == _dto.Name);
+                .Should().Contain(_ => _.Name == _product.Name);
             _dataContext.Products
-                .Should().Contain(_ => _.CategoryId == _dto.CategoryId);
+                .Should().Contain(_ => _.CategoryId == _product.CategoryId);
             _dataContext.Products
-                .Should().Contain(_ => _.Price == _dto.Price);
+                .Should().Contain(_ => _.Price == _product.Price);
             _dataContext.Products
-                .Should().Contain(_ => _.MinimumCount == _dto.MinimumCount);
+                .Should().Contain(_ => _.MinimumCount == _product.MinimumCount);
 
         }
 

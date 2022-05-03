@@ -31,6 +31,7 @@
 		<ProjectReference Include="..\StoreBDD.Infrastructure\StoreBDD.Infrastructure.csproj" />
 		<ProjectReference Include="..\StoreBDD.Persistence.EF\StoreBDD.Persistence.EF.csproj" />
 		<ProjectReference Include="..\StoreBDD.Services\StoreBDD.Services.csproj" />
+		<ProjectReference Include="..\StoreBDD.Test.Tools\StoreBDD.Test.Tools.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

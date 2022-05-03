@@ -141,5 +141,21 @@ namespace StoreBDD.Services.Test.Unit.Products
 
             expected.Should().ThrowExactly<ProductNotFoundException>();
         }
+
+        [Fact]
+        public void Get_returns_a_product_properly()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+
+            var expected = _sut.Get(product.Id);
+
+            expected.Name.Should().Be(product.Name);
+            expected.Count.Should().Be(product.Count);
+            expected.CategoryId.Should().Be(product.CategoryId);
+            expected.Price.Should().Be(product.Price);
+        }
     }
 }

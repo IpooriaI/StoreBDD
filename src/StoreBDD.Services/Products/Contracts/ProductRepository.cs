@@ -9,5 +9,6 @@ namespace StoreBDD.Services.Products.Contracts
         bool CheckName(int categoryId, string name);
         Product GetById(int id);
         void Delete(Product product);
+        GetProductDto Get(int id);
     }
 }

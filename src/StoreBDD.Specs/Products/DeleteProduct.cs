@@ -7,6 +7,8 @@ using StoreBDD.Persistence.EF.Products;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Specs.Infrastructure;
+using StoreBDD.Test.Tools.Categories;
+using StoreBDD.Test.Tools.Products;
 using System.Linq;
 using Xunit;
 using static StoreBDD.Specs.BDDHelper;
@@ -40,10 +42,7 @@ namespace StoreBDD.Specs.Products
         [Given("دسته بندی با عنوان 'لبنیات'در فهرست دسته بندی کالا وجود دارد")]
         public void Given()
         {
-            _category = new Category
-            {
-                Title = "لبنیات"
-            };
+            _category = CategoryFactory.GenerateCategory("لبنیات");
 
             _dataContext.Manipulate(_ => _.Categories.Add(_category));
         }
@@ -51,14 +50,8 @@ namespace StoreBDD.Specs.Products
         [And("کالایی با عنوان 'ماست کاله' و قیمت '5000' و تعداد '20' و حداقل موجودی '5' در دسته بندی 'لبنیات' وجود دارد")]
         public void GivenAnd()
         {
-            _product = new Product
-            {
-                Name = "ماست کاله",
-                Price = 5000,
-                Count = 20,
-                MinimumCount = 5,
-                CategoryId = _category.Id,
-            };
+            _product = ProductFactory.GenerateProduct("ماست کاله", _category.Id);
+
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }
 

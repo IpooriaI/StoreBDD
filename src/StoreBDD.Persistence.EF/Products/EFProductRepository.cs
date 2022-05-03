@@ -30,6 +30,20 @@ namespace StoreBDD.Persistence.EF.Products
             _dataContext.Products.Remove(product);
         }
 
+        public GetProductDto Get(int id)
+        {
+            return _dataContext.Products
+                .Where(_ => _.Id == id)
+                .Select(_ => new GetProductDto
+            {
+                    Name = _.Name,
+                    CategoryId = _.CategoryId,
+                    Count = _.Count,
+                    MinimumCount = _.MinimumCount,
+                    Price = _.Price
+            }).FirstOrDefault();
+        }
+
         public Product GetById(int id)
         {
             return _dataContext.Products.FirstOrDefault(p => p.Id == id);
