@@ -58,7 +58,10 @@ namespace StoreBDD.Services.Products
         public CountCheckerDto Sell(int id, SellProductDto dto)
         {
             var product = GetProduct(id);
-
+            var countChecker = new CountCheckerDto
+            {
+                MinimumCountReached = false
+            };
             CheckIfProductCountIsEnough(product.Count, dto.SoldCount);
             product.Count -= dto.SoldCount;
             CreateSellFactor(dto.SoldCount,product.Id);
@@ -67,18 +70,10 @@ namespace StoreBDD.Services.Products
 
             if(product.Count <= product.MinimumCount)
             {
-                return new CountCheckerDto
-                {
-                    MinimumCountReached = true
-                };
+                countChecker.MinimumCountReached = true;
             }
-            else
-            {
-                return new CountCheckerDto
-                {
-                    MinimumCountReached = false
-                };
-            }
+
+            return countChecker;
         }
 
         public void Buy(int id, BuyProductDto dto)
