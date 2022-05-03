@@ -1,5 +1,6 @@
 ﻿using StoreBDD.Entities;
 using StoreBDD.Services.BuyFactors.Contracts;
+using StoreBDD.Services.SellFactors.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,17 @@ namespace StoreBDD.Persistence.EF.BuyFactors
         public void Add(BuyFactor buyFactor)
         {
             _dataContext.BuyFactors.Add(buyFactor);
+        }
+
+        public List<GetBuyFactorDto> GetAll()
+        {
+            return _dataContext.BuyFactors.Select(x => new GetBuyFactorDto
+            {
+                Count = x.Count,
+                DateBought = x.DateBought,
+                Id = x.Id,
+                ProductId = x.ProductId,
+            }).ToList();
         }
     }
 }

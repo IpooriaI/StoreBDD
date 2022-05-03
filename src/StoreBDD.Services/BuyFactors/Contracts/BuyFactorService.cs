@@ -1,4 +1,5 @@
 ﻿using StoreBDD.Infrastructure.Application;
+using StoreBDD.Services.SellFactors.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace StoreBDD.Services.BuyFactors.Contracts
 {
     public interface BuyFactorService : Service
     {
-
+        List<GetBuyFactorDto> GetAll();
     }
 }
