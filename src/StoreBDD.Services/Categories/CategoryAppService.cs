@@ -24,12 +24,7 @@ namespace StoreBDD.Services.Categories
                 Title = dto.Title,
             };
 
-            var checkTitle = _repository.CheckTitle(dto.Title);
-
-            if (checkTitle)
-            {
-                throw new DuplicateCategoryTitleException();
-            }
+            CheckTitle(dto.Title);
 
             _repository.Add(category);
             _unitOfWork.Commit();
@@ -37,19 +32,17 @@ namespace StoreBDD.Services.Categories
 
         public void Delete(int id)
         {
-            var category = _repository.GetById(id);
+            var category = GetCategory(id);
 
-            if (category == null)
-            {
-                throw new CategoryNotFoundException();
-            }
             if (category.Products != null)
             {
                 throw new CategoryHasProductsException();
             }
+
             _repository.Delete(category);
             _unitOfWork.Commit();
         }
+
 
         public GetCategoryDto Get(int id)
         {
@@ -63,22 +56,34 @@ namespace StoreBDD.Services.Categories
 
         public void Update(int id, UpdateCategoryDto dto)
         {
+            var category = GetCategory(id);
+            CheckTitle(dto.Title);
+
+            category.Title = dto.Title;
+
+            _unitOfWork.Commit();
+        }
+
+        private Category GetCategory(int id)
+        {
             var category = _repository.GetById(id);
-            var checkTitle = _repository.CheckTitle(dto.Title);
 
             if (category == null)
             {
                 throw new CategoryNotFoundException();
             }
 
+            return category;
+        }
+
+        private void CheckTitle(string Title)
+        {
+            var checkTitle = _repository.CheckTitle(Title);
+
             if (checkTitle)
             {
                 throw new DuplicateCategoryTitleException();
             }
-
-            category.Title = dto.Title;
-
-            _unitOfWork.Commit();
         }
     }
 }

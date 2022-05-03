@@ -184,5 +184,31 @@ namespace StoreBDD.Services.Test.Unit.Products
             _dataContext.SellFactors.Should()
                 .Contain(_ => _.Count == dto.SoldCount);
         }
+
+        [Fact]
+        public void Sell_throws_exception_NotEnoughProductException_if_thres_not_enough_products_in_inventory()
+        {
+            var category = CategoryFactory.GenerateCategory("لبنیات");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory
+                .GenerateProduct("ماست کاله", category.Id,5,1);
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+            var dto = ProductFactory.GenerateSellProductDto(2);
+
+            Action expected =()=> _sut.Sell(product.Id, dto);
+
+            expected.Should().ThrowExactly<NotEnoughProductException>();
+        }
+
+        [Fact]
+        public void Sell_throws_exception_ProductNotFoundException_if_product_dosnt_exist()
+        {
+            var fakeProductId = 23;
+            var dto = ProductFactory.GenerateSellProductDto(2);
+
+            Action expected = () => _sut.Sell(fakeProductId,dto);
+
+            expected.Should().ThrowExactly<ProductNotFoundException>();
+        }
     }
 }

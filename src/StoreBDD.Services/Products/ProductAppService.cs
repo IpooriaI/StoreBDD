@@ -31,14 +31,8 @@ namespace StoreBDD.Services.Products
                 Price = dto.Price,
                 CategoryId = dto.CategoryId,
             };
-            var checkName = _repository
-                .CheckName(product.CategoryId, product.Name);
 
-            if(checkName)
-            {
-                throw new DuplicateProductNameInSameCategoryException();
-            }
-
+            CheckName(product.CategoryId,product.Name);
 
             _repository.Add(product);
             _unitOfWork.Commit();
@@ -46,12 +40,7 @@ namespace StoreBDD.Services.Products
 
         public void Delete(int id)
         {
-            var product = _repository.GetById(id);
-
-            if (product == null)
-            {
-                throw new ProductNotFoundException();
-            }
+            var product = GetProduct(id);
 
             _repository.Delete(product);
             _unitOfWork.Commit();
@@ -64,37 +53,19 @@ namespace StoreBDD.Services.Products
 
         public void Sell(int id, SellProductDto dto)
         {
-            var product = _repository.GetById(id);
-            product.Count = product.Count - dto.SoldCount;
-
-            var sellFactor = new SellFactor
-            {
-                ProductId = product.Id,
-                Count = dto.SoldCount,
-                DateSold = DateTime.Now.Date,
-            };
-
-            _sellFactorRepository.Add(sellFactor);
+            var product = GetProduct(id);
+            CheckProductCount(dto, product);
+            product.Count -= dto.SoldCount;
+            CreateSellFactor(dto, product);
 
             _unitOfWork.Commit();
         }
 
         public void Update(int id, UpdateProductDto dto)
         {
-            var product = _repository.GetById(id);
+            Product product = GetProduct(id);
 
-            if(product==null)
-            {
-                throw new ProductNotFoundException();
-            }
-
-            var checkName = _repository.CheckName(product.CategoryId, dto.Name);
-
-
-            if (checkName)
-            {
-                throw new DuplicateProductNameInSameCategoryException();
-            }
+            CheckName(product.CategoryId, dto.Name);
 
             product.Name = dto.Name;
             product.MinimumCount = dto.MinimumCount;
@@ -103,6 +74,48 @@ namespace StoreBDD.Services.Products
             product.CategoryId = dto.CategoryId;
 
             _unitOfWork.Commit();
+        }
+
+        private Product GetProduct(int id)
+        {
+            var product = _repository.GetById(id);
+
+            if (product == null)
+            {
+                throw new ProductNotFoundException();
+            }
+
+            return product;
+        }
+
+        private void CreateSellFactor(SellProductDto dto, Product product)
+        {
+            var sellFactor = new SellFactor
+            {
+                ProductId = product.Id,
+                Count = dto.SoldCount,
+                DateSold = DateTime.Now.Date,
+            };
+
+            _sellFactorRepository.Add(sellFactor);
+        }
+
+        private void CheckName(int categoryId, string productName)
+        {
+            var checkName = _repository.CheckName(categoryId, productName);
+
+            if (checkName)
+            {
+                throw new DuplicateProductNameInSameCategoryException();
+            }
+        }
+
+        private static void CheckProductCount(SellProductDto dto, Product product)
+        {
+            if (product.Count - dto.SoldCount < 0)
+            {
+                throw new NotEnoughProductException();
+            }
         }
     }
 }

@@ -5,13 +5,14 @@ namespace StoreBDD.Test.Tools.Products
 {
     public static class ProductFactory
     {
-        public static Product GenerateProduct(string name, int categoryId)
+        public static Product GenerateProduct(string name, int categoryId
+            ,int minimumCount=5,int count =20)
         {
             return new Product
             {
                 Name = name,
-                Count = 20,
-                MinimumCount = 5,
+                Count = count,
+                MinimumCount = minimumCount,
                 Price = 5000,
                 CategoryId = categoryId,
             };
