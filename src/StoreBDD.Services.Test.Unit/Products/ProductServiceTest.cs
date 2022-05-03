@@ -215,5 +215,38 @@ namespace StoreBDD.Services.Test.Unit.Products
 
             expected.Should().ThrowExactly<ProductNotFoundException>();
         }
+
+        [Fact]
+        public void Buy_buys_the_Product_properly()
+        {
+            var category = CategoryFactory.GenerateCategory("لبنیات");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory
+                .GenerateProduct("ماست کاله", category.Id);
+            var count = product.Count;
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+            var dto = ProductFactory.GenerateBuyProductDto(2);
+
+            _sut.Buy(product.Id, dto);
+
+            _dataContext.BuyFactors.Should().HaveCount(1);
+            _dataContext.Products.Should()
+                .Contain(_ => _.Count == count + dto.BoughtCount);
+            _dataContext.BuyFactors.Should()
+                .Contain(_ => _.DateBought == DateTime.Now.Date);
+            _dataContext.BuyFactors.Should()
+                .Contain(_ => _.Count == dto.BoughtCount);
+        }
+
+        [Fact]
+        public void Buy_throws_exception_ProductNotFoundException_if_product_dosnt_exist()
+        {
+            var fakeProductId = 23;
+            var dto = ProductFactory.GenerateBuyProductDto(2);
+
+            Action expected = () => _sut.Buy(fakeProductId, dto);
+
+            expected.Should().ThrowExactly<ProductNotFoundException>();
+        }
     }
 }
