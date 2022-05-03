@@ -25,6 +25,8 @@ namespace StoreBDD.Persistence.EF
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<SellFactor> SellFactors { get; set; }
+        public DbSet<BuyFactor> BuyFactors { get; set; }
 
     }
 }

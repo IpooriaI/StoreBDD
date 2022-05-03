@@ -7,7 +7,6 @@ using StoreBDD.Persistence.EF.Products;
 using StoreBDD.Persistence.EF.SellFactors;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
-using StoreBDD.Services.Products.Exceptions;
 using StoreBDD.Services.SellFactors.Contracts;
 using StoreBDD.Specs.Infrastructure;
 using StoreBDD.Test.Tools.Categories;
@@ -19,28 +18,34 @@ using static StoreBDD.Specs.BDDHelper;
 
 namespace StoreBDD.Specs.Products
 {
-    public class AddProductWithDuplicateName : EFDataContextDatabaseFixture
+    [Scenario("مدیریت کالا")]
+    [Feature("",
+        AsA = "فروشنده ",
+        IWantTo = " کالا های خود را مدیریت کنم",
+        InOrderTo = "کالا های خود را بفروشم"
+        )]
+    public class SellProduct : EFDataContextDatabaseFixture
     {
         private readonly ProductService _sut;
         private readonly UnitOfWork _unitOfWork;
         private readonly ProductRepository _repository;
-        private readonly SellFactorRepository _sellRepository;
+        private readonly SellFactorRepository _sellFactorRepository;
         private readonly EFDataContext _dataContext;
+        private SellProductDto _dto;
         private Category _category;
         private Product _product;
-        private AddProductDto _dto;
-        Action expected;
+        private int _count;
 
-        public AddProductWithDuplicateName(ConfigurationFixture 
-            configuration) : base(configuration)
+        public SellProduct(ConfigurationFixture configuration) : base(
+            configuration)
         {
             _dataContext = CreateDataContext();
             _unitOfWork = new EFUnitOfWork(_dataContext);
             _repository = new EFProductRepository(_dataContext);
-            _sellRepository = new EFSellFactorRepository(_dataContext);
-            _sut = new ProductAppService(_repository,
-            _unitOfWork, _sellRepository);
-    }
+            _sellFactorRepository = new EFSellFactorRepository(_dataContext);
+            _sut = new ProductAppService(_repository, 
+                _unitOfWork,_sellFactorRepository);
+        }
 
         [Given("دسته بندی با عنوان 'لبنیات'در فهرست دسته بندی کالا وجود دارد")]
         public void Given()
@@ -54,41 +59,41 @@ namespace StoreBDD.Specs.Products
         public void GivenAnd()
         {
             _product = ProductFactory
-                .GenerateProduct("ماست کاله", _category.Id); 
-
+                .GenerateProduct("ماست کاله", _category.Id);
+            _count = _product.Count;
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }
 
-        [When("کالایی با عنوان 'ماست کاله' و قیمت '3000' و تعداد '43' به دسته بندی 'لبنیات' اضافه میکنیم")]
+        [When("کالایی با عنوان 'ماست کاله' و قیمت '5000' و تعداد '20' در دسته بندی 'لبنیات' 2 عدد ان را میفروشیم")]
         public void When()
         {
-            _dto = ProductFactory.GenerateAddProductDto("ماست کاله", _category.Id);
 
+            _dto = new SellProductDto
+            {
+                SoldCount = 2
+            };
 
-            expected =()=> _sut.Add(_dto);
+            _sut.Sell(_product.Id,_dto);
+
         }
 
-        [Then("فقط کالایی با عنوان 'ماست کاله' و قیمت '5000' و تعداد '20' در دسته بندی 'لبنیات' باید وجود داشته باشد")]
+        [Then("کالایی با عنوان 'ماست کاله' و قیمت '5000' و تعداد '18' در دسته بندی 'لبنیات' باید وجود داشته باشد")]
         public void Then()
         {
-            _dataContext.Products.Count().Should().Be(1);
-            _dataContext.Products
-                .Should().Contain(_ => _.Name == _product.Name);
-            _dataContext.Products
-                .Should().Contain(_ => _.CategoryId == _product.CategoryId);
-            _dataContext.Products
-                .Should().Contain(_ => _.Price == _product.Price);
-            _dataContext.Products
-                .Should().Contain(_ => _.MinimumCount == _product.MinimumCount);
-
+            _dataContext.Products.Should()
+                .Contain(_ => _.Count == _count-_dto.SoldCount);
         }
 
-        [And("خطایی با عنوان 'کالایی با این نام در این دسته بندی وجود دارد' باید ارسال شود")]
+        [And("فاکتور فروشی با عنوان 'ماست کاله' و تعداد '2' و تاریخ 'امروز' باید وجود داشته باشد")]
         public void ThenAnd()
         {
-            expected.Should()
-                .ThrowExactly<DuplicateProductNameInSameCategoryException>();
+            _dataContext.SellFactors.Should().HaveCount(1);
+            _dataContext.SellFactors.Should()
+                .Contain(_ => _.DateSold == DateTime.Now.Date);            
+            _dataContext.SellFactors.Should()
+                .Contain(_ => _.Count == _dto.SoldCount);
         }
+
 
         [Fact]
         public void Run()

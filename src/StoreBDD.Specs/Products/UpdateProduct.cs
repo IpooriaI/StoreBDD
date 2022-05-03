@@ -4,8 +4,10 @@ using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.Products;
+using StoreBDD.Persistence.EF.SellFactors;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
+using StoreBDD.Services.SellFactors.Contracts;
 using StoreBDD.Specs.Infrastructure;
 using StoreBDD.Test.Tools.Categories;
 using StoreBDD.Test.Tools.Products;
@@ -26,6 +28,7 @@ namespace StoreBDD.Specs.Products
         private readonly ProductService _sut;
         private readonly UnitOfWork _unitOfWork;
         private readonly ProductRepository _repository;
+        private readonly SellFactorRepository _sellRepository;
         private readonly EFDataContext _dataContext;
         private UpdateProductDto _dto;
         private Category _category;
@@ -37,7 +40,9 @@ namespace StoreBDD.Specs.Products
             _dataContext = CreateDataContext();
             _unitOfWork = new EFUnitOfWork(_dataContext);
             _repository = new EFProductRepository(_dataContext);
-            _sut = new ProductAppService(_repository, _unitOfWork);
+            _sellRepository = new EFSellFactorRepository(_dataContext);
+            _sut = new ProductAppService(_repository,
+            _unitOfWork, _sellRepository);
         }
 
         [Given("دسته بندی با عنوان 'لبنیات'در فهرست دسته بندی کالا وجود دارد")]
