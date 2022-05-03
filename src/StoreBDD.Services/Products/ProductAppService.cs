@@ -55,7 +55,7 @@ namespace StoreBDD.Services.Products
             return _repository.Get(id);
         }
 
-        public void Sell(int id, SellProductDto dto)
+        public CountCheckerDto Sell(int id, SellProductDto dto)
         {
             var product = GetProduct(id);
 
@@ -64,6 +64,21 @@ namespace StoreBDD.Services.Products
             CreateSellFactor(dto.SoldCount,product.Id);
 
             _unitOfWork.Commit();
+
+            if(product.Count <= product.MinimumCount)
+            {
+                return new CountCheckerDto
+                {
+                    MinimumCountReached = true
+                };
+            }
+            else
+            {
+                return new CountCheckerDto
+                {
+                    MinimumCountReached = false
+                };
+            }
         }
 
         public void Buy(int id, BuyProductDto dto)
