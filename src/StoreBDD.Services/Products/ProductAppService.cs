@@ -32,7 +32,7 @@ namespace StoreBDD.Services.Products
                 CategoryId = dto.CategoryId,
             };
 
-            CheckName(product.CategoryId,product.Name);
+            CheckIfNameIsDuplicate(product.CategoryId,product.Name);
 
             _repository.Add(product);
             _unitOfWork.Commit();
@@ -54,9 +54,9 @@ namespace StoreBDD.Services.Products
         public void Sell(int id, SellProductDto dto)
         {
             var product = GetProduct(id);
-            CheckProductCount(dto, product);
+            CheckIfProductCountIsEnough(product.Count, dto.SoldCount);
             product.Count -= dto.SoldCount;
-            CreateSellFactor(dto, product);
+            CreateSellFactor(dto.SoldCount,product.Id);
 
             _unitOfWork.Commit();
         }
@@ -65,7 +65,7 @@ namespace StoreBDD.Services.Products
         {
             Product product = GetProduct(id);
 
-            CheckName(product.CategoryId, dto.Name);
+            CheckIfNameIsDuplicate(product.CategoryId, dto.Name);
 
             product.Name = dto.Name;
             product.MinimumCount = dto.MinimumCount;
@@ -88,19 +88,19 @@ namespace StoreBDD.Services.Products
             return product;
         }
 
-        private void CreateSellFactor(SellProductDto dto, Product product)
+        private void CreateSellFactor(int soldCount,int productId)
         {
             var sellFactor = new SellFactor
             {
-                ProductId = product.Id,
-                Count = dto.SoldCount,
+                ProductId = productId,
+                Count = soldCount,
                 DateSold = DateTime.Now.Date,
             };
 
             _sellFactorRepository.Add(sellFactor);
         }
 
-        private void CheckName(int categoryId, string productName)
+        private void CheckIfNameIsDuplicate(int categoryId, string productName)
         {
             var checkName = _repository.CheckName(categoryId, productName);
 
@@ -110,9 +110,9 @@ namespace StoreBDD.Services.Products
             }
         }
 
-        private static void CheckProductCount(SellProductDto dto, Product product)
+        private static void CheckIfProductCountIsEnough(int productCount, int soldCount)
         {
-            if (product.Count - dto.SoldCount < 0)
+            if (productCount - soldCount < 0)
             {
                 throw new NotEnoughProductException();
             }
