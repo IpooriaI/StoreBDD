@@ -14,6 +14,7 @@ using System;
 using System.Linq;
 using Xunit;
 
+
 namespace StoreBDD.Services.Test.Unit.Products
 {
     public class ProductServiceTest
