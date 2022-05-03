@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using StoreBDD.Entities;
-using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.BuyFactors;
@@ -10,15 +9,11 @@ using StoreBDD.Services.BuyFactors;
 using StoreBDD.Services.BuyFactors.Contracts;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
-using StoreBDD.Services.SellFactors.Contracts;
 using StoreBDD.Specs.Infrastructure;
 using StoreBDD.Test.Tools.Categories;
 using StoreBDD.Test.Tools.Products;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using static StoreBDD.Specs.BDDHelper;
 
@@ -34,10 +29,6 @@ namespace StoreBDD.Specs.BuyFactors
     {
         private readonly EFDataContext _dataContext;
         private readonly BuyFactorService _sut;
-        private readonly UnitOfWork _unitOfWork;
-        private readonly SellFactorRepository _sellFactorRepository;
-        private readonly BuyFactorRepository _repository;
-        private readonly ProductRepository _productRepository;
         private readonly ProductService _productSut;
         private Category _category;
         private Product _product;
@@ -48,13 +39,13 @@ namespace StoreBDD.Specs.BuyFactors
             configuration)
         {
             _dataContext = CreateDataContext();
-            _unitOfWork = new EFUnitOfWork(_dataContext);
-            _repository = new EFBuyFactorRepository(_dataContext);
-            _productRepository = new EFProductRepository(_dataContext);
-            _sellFactorRepository = new EFSellFactorRepository(_dataContext);
+            var _unitOfWork = new EFUnitOfWork(_dataContext);
+            var _repository = new EFBuyFactorRepository(_dataContext);
+            var _productRepository = new EFProductRepository(_dataContext);
+            var _sellFactorRepository = new EFSellFactorRepository(_dataContext);
             _sut = new BuyFactorAppService(_repository, _unitOfWork);
             _productSut = new ProductAppService(_productRepository, _unitOfWork
-                ,_sellFactorRepository,_repository);
+                , _sellFactorRepository, _repository);
         }
 
         [Given("دسته بندی با عنوان 'لبنیات'در فهرست دسته بندی کالا وجود دارد")]

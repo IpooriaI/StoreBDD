@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using StoreBDD.Entities;
-using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.Categories;
@@ -26,8 +25,6 @@ namespace StoreBDD.Specs.Categories
     public class DeleteCategoryWithProductsInside : EFDataContextDatabaseFixture
     {
         private readonly CategoryService _sut;
-        private readonly UnitOfWork _unitOfWork;
-        private readonly CategoryRepository _repository;
         private readonly EFDataContext _dataContext;
         private Category _category;
         private Product _product;
@@ -36,8 +33,8 @@ namespace StoreBDD.Specs.Categories
             configuration) : base(configuration)
         {
             _dataContext = CreateDataContext();
-            _unitOfWork = new EFUnitOfWork(_dataContext);
-            _repository = new EFCategoryRepository(_dataContext);
+            var _unitOfWork = new EFUnitOfWork(_dataContext);
+            var _repository = new EFCategoryRepository(_dataContext);
             _sut = new CategoryAppService(_repository, _unitOfWork);
         }
 
@@ -51,7 +48,7 @@ namespace StoreBDD.Specs.Categories
         [And("کالایی با عنوان 'ماست کاله'و قیمت'5000' و تعداد '5' در دسته بندی 'لبنیات' وجود دارد")]
         public void GivenAnd()
         {
-            _product = ProductFactory.GenerateProduct("ماست کاله", _category.Id); 
+            _product = ProductFactory.GenerateProduct("ماست کاله", _category.Id);
 
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }

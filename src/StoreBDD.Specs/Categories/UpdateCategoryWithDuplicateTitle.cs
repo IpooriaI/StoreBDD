@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using StoreBDD.Entities;
-using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.Categories;
@@ -24,8 +23,6 @@ namespace StoreBDD.Specs.Categories
     public class UpdateCategoryWithDuplicateTitle : EFDataContextDatabaseFixture
     {
         private readonly CategoryService _sut;
-        private readonly UnitOfWork _unitOfWork;
-        private readonly CategoryRepository _repository;
         private readonly EFDataContext _dataContext;
         private UpdateCategoryDto _dto;
         private Category _category;
@@ -35,8 +32,8 @@ namespace StoreBDD.Specs.Categories
             configuration) : base(configuration)
         {
             _dataContext = CreateDataContext();
-            _unitOfWork = new EFUnitOfWork(_dataContext);
-            _repository = new EFCategoryRepository(_dataContext);
+            var _unitOfWork = new EFUnitOfWork(_dataContext);
+            var _repository = new EFCategoryRepository(_dataContext);
             _sut = new CategoryAppService(_repository, _unitOfWork);
         }
 

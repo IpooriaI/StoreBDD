@@ -1,15 +1,12 @@
 ﻿using FluentAssertions;
-using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.BuyFactors;
 using StoreBDD.Persistence.EF.Products;
 using StoreBDD.Persistence.EF.SellFactors;
-using StoreBDD.Services.BuyFactors.Contracts;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Services.Products.Exceptions;
-using StoreBDD.Services.SellFactors.Contracts;
 using StoreBDD.Test.Tools.Categories;
 using StoreBDD.Test.Tools.Products;
 using System;
@@ -22,22 +19,17 @@ namespace StoreBDD.Services.Test.Unit.Products
     public class ProductServiceTest
     {
         private readonly EFDataContext _dataContext;
-        private readonly UnitOfWork _unitOfWork;
         private readonly ProductService _sut;
-        private readonly ProductRepository _repository;
-        private readonly SellFactorRepository _sellRepository;
-        private readonly BuyFactorRepository _buyRepository;
         public ProductServiceTest()
         {
             _dataContext =
-                new EFInMemoryDatabase()
-                .CreateDataContext<EFDataContext>();
-            _unitOfWork = new EFUnitOfWork(_dataContext);
-            _repository = new EFProductRepository(_dataContext);
-            _sellRepository = new EFSellFactorRepository(_dataContext);
-            _buyRepository = new EFBuyFactorRepository(_dataContext);
-            _sut = new ProductAppService(_repository, 
-                _unitOfWork,_sellRepository,_buyRepository);
+                new EFInMemoryDatabase().CreateDataContext<EFDataContext>();
+            var _unitOfWork = new EFUnitOfWork(_dataContext);
+            var _repository = new EFProductRepository(_dataContext);
+            var _sellRepository = new EFSellFactorRepository(_dataContext);
+            var _buyRepository = new EFBuyFactorRepository(_dataContext);
+            _sut = new ProductAppService(_repository,
+                _unitOfWork, _sellRepository, _buyRepository);
         }
 
         [Fact]
@@ -69,7 +61,7 @@ namespace StoreBDD.Services.Test.Unit.Products
             var dto = ProductFactory
                 .GenerateAddProductDto(product.Name, category.Id);
 
-            Action expected =()=>  _sut.Add(dto);
+            Action expected = () => _sut.Add(dto);
 
             expected.Should()
                 .ThrowExactly<DuplicateProductNameInSameCategoryException>();
@@ -85,7 +77,7 @@ namespace StoreBDD.Services.Test.Unit.Products
             var dto = ProductFactory
                 .GenerateUpdateProductDto("UpdatedName", category.Id);
 
-            _sut.Update(product.Id,dto);
+            _sut.Update(product.Id, dto);
 
             _dataContext.Products.Should().HaveCount(1);
             _dataContext.Products.Should().Contain(_ => _.Price == dto.Price);
@@ -103,11 +95,11 @@ namespace StoreBDD.Services.Test.Unit.Products
             _dataContext.Manipulate(_ => _.Categories.Add(category));
             var product = ProductFactory.GenerateProduct("Test", category.Id);
             var product2 = ProductFactory.GenerateProduct("Test2", category.Id);
-            _dataContext.Manipulate(_ => _.Products.AddRange(product,product2));
+            _dataContext.Manipulate(_ => _.Products.AddRange(product, product2));
             var dto = ProductFactory
                 .GenerateUpdateProductDto(product2.Name, category.Id);
 
-            Action expected =()=> _sut.Update(product.Id, dto);
+            Action expected = () => _sut.Update(product.Id, dto);
 
             expected.Should()
                 .ThrowExactly<DuplicateProductNameInSameCategoryException>();
@@ -122,7 +114,7 @@ namespace StoreBDD.Services.Test.Unit.Products
             var dto = ProductFactory
                 .GenerateUpdateProductDto("Dummy", category.Id);
 
-            Action expected =()=> _sut.Update(fakeProductId, dto);
+            Action expected = () => _sut.Update(fakeProductId, dto);
 
             expected.Should().ThrowExactly<ProductNotFoundException>();
         }
@@ -196,11 +188,11 @@ namespace StoreBDD.Services.Test.Unit.Products
             var category = CategoryFactory.GenerateCategory("لبنیات");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
             var product = ProductFactory
-                .GenerateProduct("ماست کاله", category.Id,5,1);
+                .GenerateProduct("ماست کاله", category.Id, 5, 1);
             _dataContext.Manipulate(_ => _.Products.Add(product));
             var dto = ProductFactory.GenerateSellProductDto(2);
 
-            Action expected =()=> _sut.Sell(product.Id, dto);
+            Action expected = () => _sut.Sell(product.Id, dto);
 
             expected.Should().ThrowExactly<NotEnoughProductException>();
         }
@@ -211,7 +203,7 @@ namespace StoreBDD.Services.Test.Unit.Products
             var fakeProductId = 23;
             var dto = ProductFactory.GenerateSellProductDto(2);
 
-            Action expected = () => _sut.Sell(fakeProductId,dto);
+            Action expected = () => _sut.Sell(fakeProductId, dto);
 
             expected.Should().ThrowExactly<ProductNotFoundException>();
         }

@@ -6,7 +6,7 @@ namespace StoreBDD.Test.Tools.Products
     public static class ProductFactory
     {
         public static Product GenerateProduct(string name, int categoryId
-            ,int minimumCount=5,int count =20)
+            , int minimumCount = 5, int count = 20)
         {
             return new Product
             {
@@ -47,7 +47,7 @@ namespace StoreBDD.Test.Tools.Products
         {
             return new SellProductDto
             {
-                SoldCount = count 
+                SoldCount = count
             };
         }
 

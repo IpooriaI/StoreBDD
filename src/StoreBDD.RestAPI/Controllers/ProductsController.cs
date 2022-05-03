@@ -19,7 +19,7 @@ namespace StoreBDD.RestAPI.Controllers
         {
             _service.Add(dto);
         }
-        
+
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
@@ -27,9 +27,9 @@ namespace StoreBDD.RestAPI.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public void Update(int id,UpdateProductDto dto)
+        public void Update(int id, UpdateProductDto dto)
         {
-            _service.Update(id,dto);
+            _service.Update(id, dto);
         }
 
         [HttpPut("{id}/sell")]

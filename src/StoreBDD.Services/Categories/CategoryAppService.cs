@@ -57,7 +57,7 @@ namespace StoreBDD.Services.Categories
         public void Update(int id, UpdateCategoryDto dto)
         {
             var category = GetCategory(id);
-            CheckIfTitleIsDuplicate(dto.Title,id);
+            CheckIfTitleIsDuplicate(dto.Title, id);
 
             category.Title = dto.Title;
 
@@ -76,9 +76,9 @@ namespace StoreBDD.Services.Categories
             return category;
         }
 
-        private void CheckIfTitleIsDuplicate(string Title,int ignoreId = 0)
+        private void CheckIfTitleIsDuplicate(string Title, int ignoreId = 0)
         {
-            var checkTitle = _repository.CheckTitle(Title,ignoreId);
+            var checkTitle = _repository.CheckTitle(Title, ignoreId);
 
             if (checkTitle)
             {

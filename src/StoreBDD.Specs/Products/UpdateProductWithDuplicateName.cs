@@ -1,21 +1,17 @@
 ﻿using FluentAssertions;
 using StoreBDD.Entities;
-using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.BuyFactors;
 using StoreBDD.Persistence.EF.Products;
 using StoreBDD.Persistence.EF.SellFactors;
-using StoreBDD.Services.BuyFactors.Contracts;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Services.Products.Exceptions;
-using StoreBDD.Services.SellFactors.Contracts;
 using StoreBDD.Specs.Infrastructure;
 using StoreBDD.Test.Tools.Categories;
 using StoreBDD.Test.Tools.Products;
 using System;
-using System.Linq;
 using Xunit;
 using static StoreBDD.Specs.BDDHelper;
 
@@ -30,10 +26,6 @@ namespace StoreBDD.Specs.Products
     public class UpdateProductWithDuplicateName : EFDataContextDatabaseFixture
     {
         private readonly ProductService _sut;
-        private readonly UnitOfWork _unitOfWork;
-        private readonly ProductRepository _repository;
-        private readonly SellFactorRepository _sellRepository;
-        private readonly BuyFactorRepository _buyRepository;
         private readonly EFDataContext _dataContext;
         private UpdateProductDto _dto;
         private Category _category;
@@ -45,10 +37,10 @@ namespace StoreBDD.Specs.Products
             (ConfigurationFixture configuration) : base(configuration)
         {
             _dataContext = CreateDataContext();
-            _unitOfWork = new EFUnitOfWork(_dataContext);
-            _repository = new EFProductRepository(_dataContext);
-            _sellRepository = new EFSellFactorRepository(_dataContext);
-            _buyRepository = new EFBuyFactorRepository(_dataContext);
+            var _unitOfWork = new EFUnitOfWork(_dataContext);
+            var _repository = new EFProductRepository(_dataContext);
+            var _sellRepository = new EFSellFactorRepository(_dataContext);
+            var _buyRepository = new EFBuyFactorRepository(_dataContext);
             _sut = new ProductAppService(_repository,
                 _unitOfWork, _sellRepository, _buyRepository);
         }
@@ -65,7 +57,7 @@ namespace StoreBDD.Specs.Products
         public void GivenAnd()
         {
             _product = ProductFactory
-                .GenerateProduct("ماست کاله", _category.Id); 
+                .GenerateProduct("ماست کاله", _category.Id);
 
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }
@@ -83,9 +75,9 @@ namespace StoreBDD.Specs.Products
         public void When()
         {
             _dto = ProductFactory
-                .GenerateUpdateProductDto(_product.Name,_product.CategoryId);
+                .GenerateUpdateProductDto(_product.Name, _product.CategoryId);
 
-            expected =()=> _sut.Update(_secondProduct.Id, _dto);
+            expected = () => _sut.Update(_secondProduct.Id, _dto);
         }
 
         [Then("کالایی با عنوان 'ماست شیرازی' و قیمت '6000' و تعداد '40' و حداقل موجودی '10' در دسته بندی 'لبنیات' باید وجود داشته باشد")]

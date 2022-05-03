@@ -1,11 +1,7 @@
 ﻿using StoreBDD.Entities;
 using StoreBDD.Services.BuyFactors.Contracts;
-using StoreBDD.Services.SellFactors.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreBDD.Persistence.EF.BuyFactors
 {

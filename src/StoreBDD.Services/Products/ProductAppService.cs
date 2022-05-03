@@ -16,7 +16,7 @@ namespace StoreBDD.Services.Products
         private readonly UnitOfWork _unitOfWork;
 
         public ProductAppService(ProductRepository repository
-            , UnitOfWork unitOfWork,SellFactorRepository sellFactorRepository,
+            , UnitOfWork unitOfWork, SellFactorRepository sellFactorRepository,
             BuyFactorRepository buyFactorRepository)
         {
             _repository = repository;
@@ -24,7 +24,7 @@ namespace StoreBDD.Services.Products
             _sellFactorRepository = sellFactorRepository;
             _buyFactorRepository = buyFactorRepository;
         }
-        
+
         public void Add(AddProductDto dto)
         {
             var product = new Product
@@ -35,8 +35,8 @@ namespace StoreBDD.Services.Products
                 Price = dto.Price,
                 CategoryId = dto.CategoryId,
             };
-          
-            CheckIfNameIsDuplicate(product.CategoryId,product.Name);
+
+            CheckIfNameIsDuplicate(product.CategoryId, product.Name);
 
             _repository.Add(product);
             _unitOfWork.Commit();
@@ -64,11 +64,11 @@ namespace StoreBDD.Services.Products
             };
             CheckIfProductCountIsEnough(product.Count, dto.SoldCount);
             product.Count -= dto.SoldCount;
-            CreateSellFactor(dto.SoldCount,product.Id);
+            CreateSellFactor(dto.SoldCount, product.Id);
 
             _unitOfWork.Commit();
 
-            if(product.Count <= product.MinimumCount)
+            if (product.Count <= product.MinimumCount)
             {
                 countChecker.MinimumCountReached = true;
             }
@@ -89,7 +89,7 @@ namespace StoreBDD.Services.Products
         {
             var product = GetProduct(id);
 
-            CheckIfNameIsDuplicate(product.CategoryId, dto.Name ,product.Id);
+            CheckIfNameIsDuplicate(product.CategoryId, dto.Name, product.Id);
 
             product.Name = dto.Name;
             product.MinimumCount = dto.MinimumCount;
@@ -112,7 +112,7 @@ namespace StoreBDD.Services.Products
             return product;
         }
 
-        private void CreateSellFactor(int soldCount,int productId)
+        private void CreateSellFactor(int soldCount, int productId)
         {
             var sellFactor = new SellFactor
             {
@@ -137,10 +137,10 @@ namespace StoreBDD.Services.Products
         }
 
         private void CheckIfNameIsDuplicate(int categoryId, string productName
-            ,int ignoreId = 0)
+            , int ignoreId = 0)
         {
             var checkName = _repository.CheckName(categoryId, productName
-                ,ignoreId);
+                , ignoreId);
 
             if (checkName)
             {

@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using StoreBDD.Infrastructure.Application;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.Categories;
 using StoreBDD.Services.Categories;
@@ -21,16 +20,14 @@ namespace StoreBDD.Specs.Categories
     public class AddCategory : EFDataContextDatabaseFixture
     {
         private readonly CategoryService _sut;
-        private readonly UnitOfWork _unitOfWork;
-        private readonly CategoryRepository _repository;
         private readonly EFDataContext _dataContext;
         private AddCategoryDto _dto;
         public AddCategory(ConfigurationFixture configuration) : base(
             configuration)
         {
             _dataContext = CreateDataContext();
-            _unitOfWork = new EFUnitOfWork(_dataContext);
-            _repository = new EFCategoryRepository(_dataContext);
+            var _unitOfWork = new EFUnitOfWork(_dataContext);
+            var _repository = new EFCategoryRepository(_dataContext);
             _sut = new CategoryAppService(_repository, _unitOfWork);
         }
 

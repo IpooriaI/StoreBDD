@@ -1,16 +1,13 @@
 ﻿using FluentAssertions;
 using StoreBDD.Entities;
-using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.BuyFactors;
 using StoreBDD.Persistence.EF.Products;
 using StoreBDD.Persistence.EF.SellFactors;
-using StoreBDD.Services.BuyFactors.Contracts;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Services.Products.Exceptions;
-using StoreBDD.Services.SellFactors.Contracts;
 using StoreBDD.Specs.Infrastructure;
 using StoreBDD.Test.Tools.Categories;
 using StoreBDD.Test.Tools.Products;
@@ -24,24 +21,20 @@ namespace StoreBDD.Specs.Products
     public class AddProductWithDuplicateName : EFDataContextDatabaseFixture
     {
         private readonly ProductService _sut;
-        private readonly UnitOfWork _unitOfWork;
-        private readonly ProductRepository _repository;
-        private readonly SellFactorRepository _sellRepository;
-        private readonly BuyFactorRepository _buyRepository;
         private readonly EFDataContext _dataContext;
         private Category _category;
         private Product _product;
         private AddProductDto _dto;
         Action expected;
 
-        public AddProductWithDuplicateName(ConfigurationFixture 
+        public AddProductWithDuplicateName(ConfigurationFixture
             configuration) : base(configuration)
         {
             _dataContext = CreateDataContext();
-            _unitOfWork = new EFUnitOfWork(_dataContext);
-            _repository = new EFProductRepository(_dataContext);
-            _sellRepository = new EFSellFactorRepository(_dataContext);
-            _buyRepository = new EFBuyFactorRepository(_dataContext);
+            var _unitOfWork = new EFUnitOfWork(_dataContext);
+            var _repository = new EFProductRepository(_dataContext);
+            var _sellRepository = new EFSellFactorRepository(_dataContext);
+            var _buyRepository = new EFBuyFactorRepository(_dataContext);
             _sut = new ProductAppService(_repository,
                 _unitOfWork, _sellRepository, _buyRepository);
         }
@@ -58,7 +51,7 @@ namespace StoreBDD.Specs.Products
         public void GivenAnd()
         {
             _product = ProductFactory
-                .GenerateProduct("ماست کاله", _category.Id); 
+                .GenerateProduct("ماست کاله", _category.Id);
 
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }
@@ -69,7 +62,7 @@ namespace StoreBDD.Specs.Products
             _dto = ProductFactory.GenerateAddProductDto("ماست کاله", _category.Id);
 
 
-            expected =()=> _sut.Add(_dto);
+            expected = () => _sut.Add(_dto);
         }
 
         [Then("فقط کالایی با عنوان 'ماست کاله' و قیمت '5000' و تعداد '20' در دسته بندی 'لبنیات' باید وجود داشته باشد")]

@@ -1,21 +1,17 @@
 ﻿using FluentAssertions;
 using StoreBDD.Entities;
-using StoreBDD.Infrastructure.Application;
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.BuyFactors;
 using StoreBDD.Persistence.EF.Products;
 using StoreBDD.Persistence.EF.SellFactors;
-using StoreBDD.Services.BuyFactors.Contracts;
 using StoreBDD.Services.Products;
 using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Services.Products.Exceptions;
-using StoreBDD.Services.SellFactors.Contracts;
 using StoreBDD.Specs.Infrastructure;
 using StoreBDD.Test.Tools.Categories;
 using StoreBDD.Test.Tools.Products;
 using System;
-using System.Linq;
 using Xunit;
 using static StoreBDD.Specs.BDDHelper;
 
@@ -30,10 +26,6 @@ namespace StoreBDD.Specs.Products
     public class SellProductWithoutEnoughCount : EFDataContextDatabaseFixture
     {
         private readonly ProductService _sut;
-        private readonly UnitOfWork _unitOfWork;
-        private readonly ProductRepository _repository;
-        private readonly SellFactorRepository _sellRepository;
-        private readonly BuyFactorRepository _buyRepository;
         private readonly EFDataContext _dataContext;
         private SellProductDto _dto;
         private Category _category;
@@ -41,14 +33,14 @@ namespace StoreBDD.Specs.Products
         private Action expected;
         private int _count;
 
-        public SellProductWithoutEnoughCount(ConfigurationFixture 
+        public SellProductWithoutEnoughCount(ConfigurationFixture
             configuration) : base(configuration)
         {
             _dataContext = CreateDataContext();
-            _unitOfWork = new EFUnitOfWork(_dataContext);
-            _repository = new EFProductRepository(_dataContext);
-            _sellRepository = new EFSellFactorRepository(_dataContext);
-            _buyRepository = new EFBuyFactorRepository(_dataContext);
+            var _unitOfWork = new EFUnitOfWork(_dataContext);
+            var _repository = new EFProductRepository(_dataContext);
+            var _sellRepository = new EFSellFactorRepository(_dataContext);
+            var _buyRepository = new EFBuyFactorRepository(_dataContext);
             _sut = new ProductAppService(_repository,
                 _unitOfWork, _sellRepository, _buyRepository);
         }
@@ -65,7 +57,7 @@ namespace StoreBDD.Specs.Products
         public void GivenAnd()
         {
             _product = ProductFactory
-                .GenerateProduct("ماست کاله", _category.Id,1,1);
+                .GenerateProduct("ماست کاله", _category.Id, 1, 1);
             _count = _product.Count;
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }
@@ -79,7 +71,7 @@ namespace StoreBDD.Specs.Products
                 SoldCount = 2
             };
 
-            expected =()=> _sut.Sell(_product.Id, _dto);
+            expected = () => _sut.Sell(_product.Id, _dto);
 
         }
 

@@ -20,7 +20,7 @@ namespace StoreBDD.Persistence.EF.Categories
             _dataContext.Categories.Add(category);
         }
 
-        public bool CheckTitle(string title,int ignoreId)
+        public bool CheckTitle(string title, int ignoreId)
         {
             return _dataContext.Categories
                 .Where(_ => _.Id != ignoreId)

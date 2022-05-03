@@ -18,7 +18,7 @@ namespace StoreBDD.Persistence.EF.Products
             _dataContext.Products.Add(product);
         }
 
-        public bool CheckName(int categoryId, string name ,int ignoreId)
+        public bool CheckName(int categoryId, string name, int ignoreId)
         {
             return _dataContext.Products
                 .Where(_ => _.CategoryId == categoryId && _.Id != ignoreId)
@@ -35,13 +35,13 @@ namespace StoreBDD.Persistence.EF.Products
             return _dataContext.Products
                 .Where(_ => _.Id == id)
                 .Select(_ => new GetProductDto
-            {
+                {
                     Name = _.Name,
                     CategoryId = _.CategoryId,
                     Count = _.Count,
                     MinimumCount = _.MinimumCount,
                     Price = _.Price
-            }).FirstOrDefault();
+                }).FirstOrDefault();
         }
 
         public Product GetById(int id)

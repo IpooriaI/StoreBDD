@@ -1,10 +1,7 @@
 ﻿using StoreBDD.Entities;
 using StoreBDD.Services.SellFactors.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreBDD.Persistence.EF.SellFactors
 {
@@ -26,12 +23,12 @@ namespace StoreBDD.Persistence.EF.SellFactors
         {
             return _dataContext.SellFactors
                 .Select(_ => new GetSellFactorDto
-            {
-                Id = _.Id,
-                Count = _.Count,
-                DateSold = _.DateSold,
-                ProductId = _.ProductId,
-            }).ToList();
+                {
+                    Id = _.Id,
+                    Count = _.Count,
+                    DateSold = _.DateSold,
+                    ProductId = _.ProductId,
+                }).ToList();
         }
     }
 }
