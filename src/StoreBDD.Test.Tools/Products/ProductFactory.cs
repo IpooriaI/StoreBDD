@@ -18,6 +18,25 @@ namespace StoreBDD.Test.Tools.Products
             };
         }
 
+        public static Product GenerateProductWithCategory(string name
+            , int minimumCount = 5, int count = 20)
+        {
+            var product = new Product
+            {
+                Name = name,
+                Count = count,
+                MinimumCount = minimumCount,
+                Price = 5000,
+                Category = new Category
+                {
+                    Title = "TestTitle"
+                }
+            };
+            product.CategoryId = product.Category.Id;
+
+            return product;
+        }
+
         public static AddProductDto GenerateAddProductDto
             (string name, int categoryId)
         {

@@ -70,12 +70,10 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Update_updates_the_Product_properly()
         {
-            var category = CategoryFactory.GenerateCategory("DummyTitle");
-            _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            var product = ProductFactory.GenerateProductWithCategory("Test");
             _dataContext.Manipulate(_ => _.Products.Add(product));
             var dto = ProductFactory
-                .GenerateUpdateProductDto("UpdatedName", category.Id);
+                .GenerateUpdateProductDto("UpdatedName", product.CategoryId);
 
             _sut.Update(product.Id, dto);
 
@@ -122,9 +120,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Delete_deletes_the_Product_properly()
         {
-            var category = CategoryFactory.GenerateCategory("DummyTitle");
-            _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            var product = ProductFactory.GenerateProductWithCategory("Dummy");
             _dataContext.Manipulate(_ => _.Products.Add(product));
 
             _sut.Delete(product.Id);
@@ -147,9 +143,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Get_returns_a_product_properly()
         {
-            var category = CategoryFactory.GenerateCategory("DummyTitle");
-            _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            var product = ProductFactory.GenerateProductWithCategory("Test");
             _dataContext.Manipulate(_ => _.Products.Add(product));
 
             var expected = _sut.Get(product.Id);
@@ -163,19 +157,16 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Sell_sells_the_Product_properly()
         {
-            var category = CategoryFactory.GenerateCategory("لبنیات");
-            _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory
-                .GenerateProduct("ماست کاله", category.Id);
+            var product = ProductFactory.GenerateProductWithCategory("Test");
             var count = product.Count;
             _dataContext.Manipulate(_ => _.Products.Add(product));
             var dto = ProductFactory.GenerateSellProductDto(2);
 
             _sut.Sell(product.Id, dto);
 
+            _dataContext.SellFactors.Should().HaveCount(1);
             _dataContext.Products.Should()
                 .Contain(_ => _.Count == count - dto.SoldCount);
-            _dataContext.SellFactors.Should().HaveCount(1);
             _dataContext.SellFactors.Should()
                 .Contain(_ => _.DateSold == DateTime.Now.Date);
             _dataContext.SellFactors.Should()
@@ -185,10 +176,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Sell_throws_exception_NotEnoughProductException_if_thres_not_enough_products_in_inventory()
         {
-            var category = CategoryFactory.GenerateCategory("لبنیات");
-            _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory
-                .GenerateProduct("ماست کاله", category.Id, 5, 1);
+            var product = ProductFactory.GenerateProductWithCategory("Test", 5, 1);
             _dataContext.Manipulate(_ => _.Products.Add(product));
             var dto = ProductFactory.GenerateSellProductDto(2);
 
@@ -211,10 +199,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Buy_buys_the_Product_properly()
         {
-            var category = CategoryFactory.GenerateCategory("لبنیات");
-            _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory
-                .GenerateProduct("ماست کاله", category.Id);
+            var product = ProductFactory.GenerateProductWithCategory("test");
             var count = product.Count;
             _dataContext.Manipulate(_ => _.Products.Add(product));
             var dto = ProductFactory.GenerateBuyProductDto(2);
