@@ -58,25 +58,18 @@ namespace StoreBDD.Services.Products
             return _repository.Get(id);
         }
 
-        public CountCheckerDto Sell(int id, SellProductDto dto)
+        public UpdateResponseDto Sell(int id, SellProductDto dto)
         {
             var product = GetProduct(id);
-            var countChecker = new CountCheckerDto
-            {
-                MinimumCountReached = false
-            };
+
             CheckIfProductCountIsEnough(product.Count, dto.SoldCount);
             product.Count -= dto.SoldCount;
             CreateSellFactor(dto.SoldCount, product.Id);
+            var updateResponse = 
+                CreateUpdateResponse(product.Count,product.MinimumCount);
 
             _unitOfWork.Commit();
-
-            if (product.Count <= product.MinimumCount)
-            {
-                countChecker.MinimumCountReached = true;
-            }
-
-            return countChecker;
+            return updateResponse;
         }
 
         public void Buy(int id, BuyProductDto dto)
@@ -178,6 +171,23 @@ namespace StoreBDD.Services.Products
             {
                 throw new CategoryNotFoundException();
             }
+        }
+
+        private static UpdateResponseDto CreateUpdateResponse(int count
+            ,int minimumCount)
+        {
+            var response = new UpdateResponseDto
+            {
+                MinimumCountReached = false,
+                RemainingSupply = count
+            };
+
+            if (count <= minimumCount)
+            {
+                response.MinimumCountReached = true;
+            }
+
+            return response;
         }
 
     }

@@ -33,7 +33,7 @@ namespace StoreBDD.RestAPI.Controllers
         }
 
         [HttpPut("{id}/sell")]
-        public CountCheckerDto Sell(int id, SellProductDto dto)
+        public UpdateResponseDto Sell(int id, SellProductDto dto)
         {
             return _service.Sell(id, dto);
         }
