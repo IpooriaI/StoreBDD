@@ -21,5 +21,16 @@ namespace StoreBDD.RestAPI.Controllers
             return _service.GetAll();
         }
 
+        [HttpGet("{id}")]
+        public GetSellFactorDto Get(int id)
+        {
+            return _service.Get(id);
+        }
+
+        [HttpGet("profit")]
+        public GetProfitDto GetProfit()
+        {
+            return _service.GetProfit();
+        }
     }
 }

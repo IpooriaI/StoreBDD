@@ -19,6 +19,17 @@ namespace StoreBDD.Persistence.EF.SellFactors
             _dataContext.SellFactors.Add(sellFactor);
         }
 
+        public List<GetFactorPriceDto> GetFactorPrice()
+        {
+            return _dataContext.SellFactors
+                .Join(_dataContext.Products,a => a.ProductId,
+                b => b.Id,(a,b) => new GetFactorPriceDto
+            {
+                Price = b.Price,
+                Count = a.Count,
+            }).ToList();
+        }
+
         public List<GetSellFactorDto> GetAll()
         {
             return _dataContext.SellFactors
@@ -29,6 +40,18 @@ namespace StoreBDD.Persistence.EF.SellFactors
                     DateSold = _.DateSold,
                     ProductId = _.ProductId,
                 }).ToList();
+        }
+
+        public GetSellFactorDto Get(int id)
+        {
+             return _dataContext.SellFactors
+                .Select(_ => new GetSellFactorDto
+                {
+                    Id = _.Id,
+                    Count = _.Count,
+                    DateSold = _.DateSold,
+                    ProductId = _.ProductId,
+                }).FirstOrDefault(_ => _.Id == id);
         }
     }
 }

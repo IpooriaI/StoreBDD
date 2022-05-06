@@ -18,6 +18,17 @@ namespace StoreBDD.Persistence.EF.BuyFactors
             _dataContext.BuyFactors.Add(buyFactor);
         }
 
+        public GetBuyFactorDto Get(int id)
+        {
+            return _dataContext.BuyFactors.Select(x => new GetBuyFactorDto
+            {
+                Count = x.Count,
+                DateBought = x.DateBought,
+                Id = x.Id,
+                ProductId = x.ProductId,
+            }).FirstOrDefault(_ => _.Id == id);
+        }
+
         public List<GetBuyFactorDto> GetAll()
         {
             return _dataContext.BuyFactors.Select(x => new GetBuyFactorDto

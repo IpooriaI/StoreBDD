@@ -15,9 +15,30 @@ namespace StoreBDD.Services.SellFactors
             _unitOfWork = unitOfWork;
         }
 
+        public GetSellFactorDto Get(int id)
+        {
+            return _repository.Get(id);
+        }
+
         public List<GetSellFactorDto> GetAll()
         {
             return _repository.GetAll();
+        }
+
+        public GetProfitDto GetProfit()
+        {
+            var profit = 0;
+            var factors = _repository.GetFactorPrice();
+            foreach (var factor in factors)
+            {
+                profit += factor.Count * factor.Price;
+            }
+
+            return new GetProfitDto
+            {
+                Profit = profit,
+                SellFactors = _repository.GetAll()
+            };
         }
     }
 }

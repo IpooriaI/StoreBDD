@@ -8,5 +8,7 @@ namespace StoreBDD.Services.SellFactors.Contracts
     {
         void Add(SellFactor sellFactor);
         List<GetSellFactorDto> GetAll();
+        List<GetFactorPriceDto> GetFactorPrice();
+        GetSellFactorDto Get(int id);
     }
 }

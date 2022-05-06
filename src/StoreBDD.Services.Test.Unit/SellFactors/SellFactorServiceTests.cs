@@ -15,7 +15,6 @@ namespace StoreBDD.Services.Test.Unit.SellFactors
     {
         private readonly EFDataContext _dataContext;
         private readonly SellFactorService _sut;
-        private readonly ProductService _productSut;
 
         public SellFactorServiceTests()
         {
@@ -37,6 +36,19 @@ namespace StoreBDD.Services.Test.Unit.SellFactors
             expected.Should().Contain(_ => _.ProductId == sellFactor.ProductId);
             expected.Should().Contain(_ => _.DateSold == DateTime.Now.Date);
             expected.Should().Contain(_ => _.Count == sellFactor.Count);
+        }
+
+        [Fact]
+        public void Get_Returns_a_GetSellFactorDto_properly()
+        {
+            var sellFactor = SellFactorFactory.GenerateSellFactor();
+            _dataContext.Manipulate(_ => _.SellFactors.Add(sellFactor));
+
+            var expected = _sut.Get(sellFactor.Id);
+
+            expected.Id.Should().Be(sellFactor.Id);
+            expected.Count.Should().Be(sellFactor.Count);
+            expected.ProductId.Should().Be(sellFactor.ProductId);
         }
     }
 }

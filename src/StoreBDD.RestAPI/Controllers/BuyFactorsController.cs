@@ -20,5 +20,11 @@ namespace StoreBDD.RestAPI.Controllers
         {
             return _service.GetAll();
         }
+
+        [HttpGet("{id}")]
+        public GetBuyFactorDto Get(int id)
+        {
+            return _service.Get(id);
+        }
     }
 }

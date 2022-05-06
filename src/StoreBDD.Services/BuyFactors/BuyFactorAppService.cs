@@ -15,6 +15,11 @@ namespace StoreBDD.Services.BuyFactors
             _unitOfWork = unitOfWork;
         }
 
+        public GetBuyFactorDto Get(int id)
+        {
+            return _repository.Get(id);
+        }
+
         public List<GetBuyFactorDto> GetAll()
         {
             return _repository.GetAll();

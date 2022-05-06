@@ -8,5 +8,6 @@ namespace StoreBDD.Services.BuyFactors.Contracts
     {
         void Add(BuyFactor buyFactor);
         List<GetBuyFactorDto> GetAll();
+        GetBuyFactorDto Get(int id);
     }
 }

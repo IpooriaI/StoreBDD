@@ -6,5 +6,6 @@ namespace StoreBDD.Services.BuyFactors.Contracts
     public interface BuyFactorService : Service
     {
         List<GetBuyFactorDto> GetAll();
+        GetBuyFactorDto Get(int id);
     }
 }

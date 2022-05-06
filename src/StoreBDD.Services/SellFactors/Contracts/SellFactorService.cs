@@ -6,5 +6,7 @@ namespace StoreBDD.Services.SellFactors.Contracts
     public interface SellFactorService : Service
     {
         List<GetSellFactorDto> GetAll();
+        GetSellFactorDto Get(int id);
+        GetProfitDto GetProfit();
     }
 }
