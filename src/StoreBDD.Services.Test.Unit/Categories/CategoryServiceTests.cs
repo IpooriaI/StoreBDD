@@ -118,7 +118,7 @@ namespace StoreBDD.Services.Test.Unit.Categories
         {
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test", category.Id,9);
+            var product = ProductFactory.GenerateProduct("Test", category.Id, 9);
             _dataContext.Manipulate(_ => _.Products.Add(product));
 
             Action expected = () => _sut.Delete(category.Id);
@@ -131,7 +131,7 @@ namespace StoreBDD.Services.Test.Unit.Categories
         {
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test", category.Id,4);
+            var product = ProductFactory.GenerateProduct("Test", category.Id, 4);
             _dataContext.Manipulate(_ => _.Products.Add(product));
 
             var expected = _sut.Get(category.Id);
@@ -144,7 +144,7 @@ namespace StoreBDD.Services.Test.Unit.Categories
         public void GetAll_returns_all_categories_and_thier_products_properly()
         {
             var product = ProductFactory.GenerateProductWithCategory("test", 2);
-            var product2 = ProductFactory.GenerateProductWithCategory("test2",4);
+            var product2 = ProductFactory.GenerateProductWithCategory("test2", 4);
             _dataContext.Manipulate(_ => _.Products.AddRange(product, product2));
 
             var expected = _sut.GetAll();

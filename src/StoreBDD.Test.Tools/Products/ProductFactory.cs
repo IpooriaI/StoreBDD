@@ -6,7 +6,7 @@ namespace StoreBDD.Test.Tools.Products
     public static class ProductFactory
     {
         public static Product GenerateProduct(string name, int categoryId
-             ,int id, int minimumCount = 5, int count = 20)
+             , int id, int minimumCount = 5, int count = 20)
         {
             return new Product
             {
@@ -20,7 +20,7 @@ namespace StoreBDD.Test.Tools.Products
         }
 
         public static Product GenerateProductWithCategory(string name
-            ,int id, int minimumCount = 5, int count = 20)
+            , int id, int minimumCount = 5, int count = 20)
         {
             var product = new Product
             {
@@ -40,7 +40,7 @@ namespace StoreBDD.Test.Tools.Products
         }
 
         public static AddProductDto GenerateAddProductDto
-            (string name, int categoryId,int id=50)
+            (string name, int categoryId, int id = 50)
         {
             return new AddProductDto
             {
@@ -53,7 +53,7 @@ namespace StoreBDD.Test.Tools.Products
         }
 
         public static UpdateProductDto GenerateUpdateProductDto
-            (string name, int categoryId,int id=40)
+            (string name, int categoryId, int id = 40)
         {
             return new UpdateProductDto
             {

@@ -54,7 +54,7 @@ namespace StoreBDD.Specs.Products
         public void GivenAnd()
         {
             _product = ProductFactory
-                .GenerateProduct("ماست کالکه", _category.Id,3);
+                .GenerateProduct("ماست کالکه", _category.Id, 3);
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }
 

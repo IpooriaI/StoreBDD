@@ -78,9 +78,7 @@ namespace StoreBDD.Services.Categories
 
         private void CheckIfTitleIsDuplicate(string Title, int ignoreId = 0)
         {
-            var checkTitle = _repository.CheckTitle(Title, ignoreId);
-
-            if (checkTitle)
+            if (_repository.CheckTitle(Title, ignoreId))
             {
                 throw new DuplicateCategoryTitleException();
             }

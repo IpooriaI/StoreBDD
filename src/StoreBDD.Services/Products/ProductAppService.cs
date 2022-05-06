@@ -65,8 +65,8 @@ namespace StoreBDD.Services.Products
             CheckIfProductCountIsEnough(product.Count, dto.SoldCount);
             product.Count -= dto.SoldCount;
             CreateSellFactor(dto.SoldCount, product.Id);
-            var updateResponse = 
-                CreateUpdateResponse(product.Count,product.MinimumCount);
+            var updateResponse =
+                CreateUpdateResponse(product.Count, product.MinimumCount);
 
             _unitOfWork.Commit();
             return updateResponse;
@@ -136,10 +136,7 @@ namespace StoreBDD.Services.Products
         private void CheckIfNameIsDuplicate(int categoryId, string productName
             , int ignoreId = 0)
         {
-            var checkName = _repository.CheckName(categoryId, productName
-                , ignoreId);
-
-            if (checkName)
+            if (_repository.CheckName(categoryId, productName, ignoreId))
             {
                 throw new DuplicateProductNameInSameCategoryException();
             }
@@ -147,9 +144,7 @@ namespace StoreBDD.Services.Products
 
         private void CheckIfIdIsDuplicate(int productId)
         {
-            var checkId = _repository.CheckId(productId);
-
-            if (checkId)
+            if (_repository.CheckId(productId))
             {
                 throw new DuplicateProductIdException();
             }
@@ -174,7 +169,7 @@ namespace StoreBDD.Services.Products
         }
 
         private static UpdateResponseDto CreateUpdateResponse(int count
-            ,int minimumCount)
+            , int minimumCount)
         {
             var response = new UpdateResponseDto
             {
