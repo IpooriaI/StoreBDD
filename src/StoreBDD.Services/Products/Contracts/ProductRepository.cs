@@ -7,6 +7,8 @@ namespace StoreBDD.Services.Products.Contracts
     {
         void Add(Product product);
         bool CheckName(int categoryId, string name, int ignoreId);
+        bool CheckCategory(int categoryId);
+        bool CheckId(int productId);
         Product GetById(int id);
         void Delete(Product product);
         GetProductDto Get(int id);

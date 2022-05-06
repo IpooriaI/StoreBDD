@@ -118,7 +118,7 @@ namespace StoreBDD.Services.Test.Unit.Categories
         {
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            var product = ProductFactory.GenerateProduct("Test", category.Id,9);
             _dataContext.Manipulate(_ => _.Products.Add(product));
 
             Action expected = () => _sut.Delete(category.Id);
@@ -131,7 +131,7 @@ namespace StoreBDD.Services.Test.Unit.Categories
         {
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            var product = ProductFactory.GenerateProduct("Test", category.Id,4);
             _dataContext.Manipulate(_ => _.Products.Add(product));
 
             var expected = _sut.Get(category.Id);
@@ -143,18 +143,14 @@ namespace StoreBDD.Services.Test.Unit.Categories
         [Fact]
         public void GetAll_returns_all_categories_and_thier_products_properly()
         {
-            var category = CategoryFactory.GenerateCategory("DummyTitle");
-            var category2 = CategoryFactory.GenerateCategory("DummyTitle2");
-            _dataContext.Manipulate(_ => _.Categories
-                .AddRange(category, category2));
-            var product = ProductFactory.GenerateProduct("Test", category.Id);
-            var product2 = ProductFactory.GenerateProduct("Test2", category2.Id);
+            var product = ProductFactory.GenerateProductWithCategory("test", 2);
+            var product2 = ProductFactory.GenerateProductWithCategory("test2",4);
             _dataContext.Manipulate(_ => _.Products.AddRange(product, product2));
 
             var expected = _sut.GetAll();
 
-            expected.Should().Contain(_ => _.Title == category.Title);
-            expected.Should().Contain(_ => _.Title == category2.Title);
+            expected.Should().Contain(_ => _.Title == product.Category.Title);
+            expected.Should().Contain(_ => _.Title == product.Category.Title);
         }
     }
 }

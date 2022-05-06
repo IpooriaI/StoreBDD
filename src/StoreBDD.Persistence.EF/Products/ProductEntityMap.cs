@@ -11,8 +11,6 @@ namespace StoreBDD.Persistence.EF.Products
             builder.ToTable("Products");
 
             builder.HasKey(_ => _.Id);
-            builder.Property(_ => _.Id)
-                .ValueGeneratedOnAdd();
 
             builder.HasOne(_ => _.Category)
                 .WithMany(_ => _.Products)

@@ -29,6 +29,7 @@ namespace StoreBDD.Services.Products
         {
             var product = new Product
             {
+                Id = dto.Id,
                 Name = dto.Name,
                 MinimumCount = dto.MinimumCount,
                 Count = 0,
@@ -37,6 +38,8 @@ namespace StoreBDD.Services.Products
             };
 
             CheckIfNameIsDuplicate(product.CategoryId, product.Name);
+            CheckIfIdIsDuplicate(product.Id);
+            CheckIfCategoryExists(product.CategoryId);
 
             _repository.Add(product);
             _unitOfWork.Commit();
@@ -90,6 +93,7 @@ namespace StoreBDD.Services.Products
             var product = GetProduct(id);
 
             CheckIfNameIsDuplicate(product.CategoryId, dto.Name, product.Id);
+            CheckIfCategoryExists(dto.CategoryId);
 
             product.Name = dto.Name;
             product.MinimumCount = dto.MinimumCount;
@@ -148,6 +152,16 @@ namespace StoreBDD.Services.Products
             }
         }
 
+        private void CheckIfIdIsDuplicate(int productId)
+        {
+            var checkId = _repository.CheckId(productId);
+
+            if (checkId)
+            {
+                throw new DuplicateProductIdException();
+            }
+        }
+
         private static void CheckIfProductCountIsEnough(int productCount, int soldCount)
         {
             if (productCount - soldCount < 0)
@@ -156,6 +170,15 @@ namespace StoreBDD.Services.Products
             }
         }
 
+        private void CheckIfCategoryExists(int categoryId)
+        {
+            var checkCategory = _repository.CheckCategory(categoryId);
+
+            if (!checkCategory)
+            {
+                throw new CategoryNotFoundException();
+            }
+        }
 
     }
 }

@@ -52,7 +52,8 @@ namespace StoreBDD.Specs.Products
         [And("کالایی با عنوان 'ماست کاله' و قیمت '5000' و تعداد '20' و حداقل موجودی '5' در دسته بندی 'لبنیات' وجود دارد")]
         public void GivenAnd()
         {
-            _product = ProductFactory.GenerateProduct("ماست کاله", _category.Id);
+            _product = ProductFactory
+                .GenerateProduct("ماست کاله", _category.Id,3);
 
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }

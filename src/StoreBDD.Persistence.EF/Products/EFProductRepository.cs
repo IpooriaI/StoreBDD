@@ -18,6 +18,16 @@ namespace StoreBDD.Persistence.EF.Products
             _dataContext.Products.Add(product);
         }
 
+        public bool CheckCategory(int categoryId)
+        {
+            return _dataContext.Categories.Any(_ => _.Id == categoryId);
+        }
+
+        public bool CheckId(int productId)
+        {
+            return _dataContext.Products.Any(_ => _.Id == productId);
+        }
+
         public bool CheckName(int categoryId, string name, int ignoreId)
         {
             return _dataContext.Products

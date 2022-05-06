@@ -56,7 +56,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         {
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test", category.Id);
+            var product = ProductFactory.GenerateProduct("Test", category.Id,5);
             _dataContext.Manipulate(_ => _.Products.Add(product));
             var dto = ProductFactory
                 .GenerateAddProductDto(product.Name, category.Id);
@@ -68,9 +68,36 @@ namespace StoreBDD.Services.Test.Unit.Products
         }
 
         [Fact]
+        public void Add_throws_DuplicateProductIdException_if_productid_already_exists()
+        {
+            var category = CategoryFactory.GenerateCategory("DummyTitle");
+            _dataContext.Manipulate(_ => _.Categories.Add(category));
+            var product = ProductFactory.GenerateProduct("Test", category.Id, 2);
+            _dataContext.Manipulate(_ => _.Products.AddRange(product));
+            var dto = ProductFactory
+                .GenerateAddProductDto("DummyName",category.Id,product.Id);
+
+            Action expected = () => _sut.Add(dto);
+
+            expected.Should().ThrowExactly<DuplicateProductIdException>();
+        }
+
+        [Fact]
+        public void Add_throws_CategoryNotFoundException_if_category_dosnt_exist()
+        {
+            var fakeCategoryId = 40;
+            var dto = ProductFactory
+                .GenerateAddProductDto("DummyName", fakeCategoryId);
+
+            Action expected = () => _sut.Add(dto);
+
+            expected.Should().ThrowExactly<CategoryNotFoundException>();
+        }
+
+        [Fact]
         public void Update_updates_the_Product_properly()
         {
-            var product = ProductFactory.GenerateProductWithCategory("Test");
+            var product = ProductFactory.GenerateProductWithCategory("Test",4);
             _dataContext.Manipulate(_ => _.Products.Add(product));
             var dto = ProductFactory
                 .GenerateUpdateProductDto("UpdatedName", product.CategoryId);
@@ -91,8 +118,8 @@ namespace StoreBDD.Services.Test.Unit.Products
         {
             var category = CategoryFactory.GenerateCategory("DummyTitle");
             _dataContext.Manipulate(_ => _.Categories.Add(category));
-            var product = ProductFactory.GenerateProduct("Test", category.Id);
-            var product2 = ProductFactory.GenerateProduct("Test2", category.Id);
+            var product = ProductFactory.GenerateProduct("Test", category.Id,2);
+            var product2 = ProductFactory.GenerateProduct("Test2", category.Id,3);
             _dataContext.Manipulate(_ => _.Products.AddRange(product, product2));
             var dto = ProductFactory
                 .GenerateUpdateProductDto(product2.Name, category.Id);
@@ -118,9 +145,23 @@ namespace StoreBDD.Services.Test.Unit.Products
         }
 
         [Fact]
+        public void Update_throws_CategoryNotFoundException_if_category_dosnt_exist()
+        {
+            var fakeCategoryId = 40;
+            var product = ProductFactory.GenerateProductWithCategory("test", 2);
+            _dataContext.Manipulate(_ => _.Products.Add(product));
+            var dto = ProductFactory
+                .GenerateUpdateProductDto("DummyName", fakeCategoryId);
+
+            Action expected = () => _sut.Update(product.Id,dto);
+
+            expected.Should().ThrowExactly<CategoryNotFoundException>();
+        }
+
+        [Fact]
         public void Delete_deletes_the_Product_properly()
         {
-            var product = ProductFactory.GenerateProductWithCategory("Dummy");
+            var product = ProductFactory.GenerateProductWithCategory("Dummy",2);
             _dataContext.Manipulate(_ => _.Products.Add(product));
 
             _sut.Delete(product.Id);
@@ -143,7 +184,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Get_returns_a_product_properly()
         {
-            var product = ProductFactory.GenerateProductWithCategory("Test");
+            var product = ProductFactory.GenerateProductWithCategory("Test",3);
             _dataContext.Manipulate(_ => _.Products.Add(product));
 
             var expected = _sut.Get(product.Id);
@@ -157,7 +198,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Sell_sells_the_Product_properly()
         {
-            var product = ProductFactory.GenerateProductWithCategory("Test");
+            var product = ProductFactory.GenerateProductWithCategory("Test",3);
             var count = product.Count;
             _dataContext.Manipulate(_ => _.Products.Add(product));
             var dto = ProductFactory.GenerateSellProductDto(2);
@@ -176,9 +217,9 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Sell_throws_exception_NotEnoughProductException_if_thres_not_enough_products_in_inventory()
         {
-            var product = ProductFactory.GenerateProductWithCategory("Test", 5, 1);
+            var product = ProductFactory.GenerateProductWithCategory("Test",4,3);
             _dataContext.Manipulate(_ => _.Products.Add(product));
-            var dto = ProductFactory.GenerateSellProductDto(2);
+            var dto = ProductFactory.GenerateSellProductDto(22);
 
             Action expected = () => _sut.Sell(product.Id, dto);
 
@@ -199,7 +240,7 @@ namespace StoreBDD.Services.Test.Unit.Products
         [Fact]
         public void Buy_buys_the_Product_properly()
         {
-            var product = ProductFactory.GenerateProductWithCategory("test");
+            var product = ProductFactory.GenerateProductWithCategory("test",3);
             var count = product.Count;
             _dataContext.Manipulate(_ => _.Products.Add(product));
             var dto = ProductFactory.GenerateBuyProductDto(2);

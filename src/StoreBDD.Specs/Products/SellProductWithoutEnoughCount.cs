@@ -57,7 +57,7 @@ namespace StoreBDD.Specs.Products
         public void GivenAnd()
         {
             _product = ProductFactory
-                .GenerateProduct("ماست کاله", _category.Id, 1, 1);
+                .GenerateProduct("ماست کاله", _category.Id, 1);
             _count = _product.Count;
             _dataContext.Manipulate(_ => _.Products.Add(_product));
         }
@@ -68,7 +68,7 @@ namespace StoreBDD.Specs.Products
 
             _dto = new SellProductDto
             {
-                SoldCount = 2
+                SoldCount = 22
             };
 
             expected = () => _sut.Sell(_product.Id, _dto);

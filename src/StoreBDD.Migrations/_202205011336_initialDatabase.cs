@@ -12,7 +12,7 @@ namespace StoreBDD.Migrations
                 .WithColumn("Id").AsInt32().Identity().NotNullable().PrimaryKey()
                 .WithColumn("Title").AsString(30).NotNullable();
             Create.Table("Products")
-                .WithColumn("Id").AsInt32().Identity().NotNullable().PrimaryKey()
+                .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()
                 .WithColumn("Name").AsString(50).NotNullable()
                 .WithColumn("Price").AsInt32().NotNullable()
                 .WithColumn("Count").AsInt32().NotNullable()
