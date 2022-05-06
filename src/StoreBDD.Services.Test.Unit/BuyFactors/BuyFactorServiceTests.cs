@@ -4,7 +4,6 @@ using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.BuyFactors;
 using StoreBDD.Services.BuyFactors;
 using StoreBDD.Services.BuyFactors.Contracts;
-using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Test.Tools.BuyFactors;
 using System;
 using Xunit;

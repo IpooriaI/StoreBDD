@@ -27,18 +27,23 @@ namespace StoreBDD.Services.SellFactors
 
         public GetProfitDto GetProfit()
         {
-            var profit = 0;
+            return new GetProfitDto
+            {
+                Profit = CalculateProfit(),
+                SellFactors = _repository.GetAll()
+            };
+        }
+
+        private int CalculateProfit()
+        {
+            int profit = 0;
             var factors = _repository.GetFactorPrice();
             foreach (var factor in factors)
             {
                 profit += factor.Count * factor.Price;
             }
 
-            return new GetProfitDto
-            {
-                Profit = profit,
-                SellFactors = _repository.GetAll()
-            };
+            return profit;
         }
     }
 }

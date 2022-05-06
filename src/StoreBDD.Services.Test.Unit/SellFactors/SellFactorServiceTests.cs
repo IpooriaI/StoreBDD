@@ -2,7 +2,6 @@
 using StoreBDD.Infrastructure.Test;
 using StoreBDD.Persistence.EF;
 using StoreBDD.Persistence.EF.SellFactors;
-using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Services.SellFactors;
 using StoreBDD.Services.SellFactors.Contracts;
 using StoreBDD.Test.Tools.SellFactors;
