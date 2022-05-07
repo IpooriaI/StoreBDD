@@ -7,5 +7,7 @@ namespace StoreBDD.Services.BuyFactors.Contracts
     {
         List<GetBuyFactorDto> GetAll();
         GetBuyFactorDto Get(int id);
+        void Delete(int id);
+        void Update(int id, UpdateBuyFactorDto dto);
     }
 }

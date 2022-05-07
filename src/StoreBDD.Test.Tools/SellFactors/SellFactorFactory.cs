@@ -1,4 +1,5 @@
 ﻿using StoreBDD.Entities;
+using StoreBDD.Services.SellFactors.Contracts;
 using System;
 
 namespace StoreBDD.Test.Tools.SellFactors
@@ -28,6 +29,16 @@ namespace StoreBDD.Test.Tools.SellFactors
             sellFactor.ProductId = sellFactor.Product.Id;
 
             return sellFactor;
+        }
+
+        public static UpdateSellFactorDto GenerateUpdateSellFactorDto(int count
+            , DateTime date)
+        {
+            return new UpdateSellFactorDto
+            {
+                DateSold= date.Date,
+                Count = count
+            };
         }
     }
 }

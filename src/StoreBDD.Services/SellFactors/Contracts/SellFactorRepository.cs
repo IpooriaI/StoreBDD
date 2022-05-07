@@ -10,5 +10,7 @@ namespace StoreBDD.Services.SellFactors.Contracts
         List<GetSellFactorDto> GetAll();
         List<GetFactorPriceDto> GetFactorPrice();
         GetSellFactorDto Get(int id);
+        SellFactor GetById(int id);
+        void Delete(SellFactor factor);
     }
 }

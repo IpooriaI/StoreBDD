@@ -1,4 +1,5 @@
 ﻿using StoreBDD.Entities;
+using StoreBDD.Services.BuyFactors.Contracts;
 using System;
 
 namespace StoreBDD.Test.Tools.BuyFactors
@@ -28,6 +29,16 @@ namespace StoreBDD.Test.Tools.BuyFactors
             buyFactor.ProductId = buyFactor.Product.Id;
 
             return buyFactor;
+        }
+
+        public static UpdateBuyFactorDto GenerateUpdateBuyFactorDto(int count
+            ,DateTime date)
+        {
+            return new UpdateBuyFactorDto
+            {
+                Count = count,
+                DateBought = date.Date
+            };
         }
     }
 }

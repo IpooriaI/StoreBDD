@@ -26,5 +26,17 @@ namespace StoreBDD.RestAPI.Controllers
         {
             return _service.Get(id);
         }
+
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            _service.Delete(id);
+        }
+
+        [HttpPut("{id}")]
+        public void Update(int id,UpdateBuyFactorDto dto)
+        {
+            _service.Update(id,dto);
+        }
     }
 }

@@ -18,6 +18,11 @@ namespace StoreBDD.Persistence.EF.BuyFactors
             _dataContext.BuyFactors.Add(buyFactor);
         }
 
+        public void Delete(BuyFactor factor)
+        {
+            _dataContext.BuyFactors.Remove(factor);
+        }
+
         public GetBuyFactorDto Get(int id)
         {
             return _dataContext.BuyFactors.Select(x => new GetBuyFactorDto
@@ -38,6 +43,12 @@ namespace StoreBDD.Persistence.EF.BuyFactors
                 Id = x.Id,
                 ProductId = x.ProductId,
             }).ToList();
+        }
+
+        public BuyFactor GetById(int id)
+        {
+            return _dataContext.BuyFactors
+                .FirstOrDefault(_ => _.Id == id);
         }
     }
 }

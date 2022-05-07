@@ -1,5 +1,7 @@
-﻿using StoreBDD.Infrastructure.Application;
+﻿using StoreBDD.Entities;
+using StoreBDD.Infrastructure.Application;
 using StoreBDD.Services.SellFactors.Contracts;
+using StoreBDD.Services.SellFactors.Exceptions;
 using System.Collections.Generic;
 
 namespace StoreBDD.Services.SellFactors
@@ -14,6 +16,15 @@ namespace StoreBDD.Services.SellFactors
             _repository = repository;
             _unitOfWork = unitOfWork;
         }
+
+        public void Delete(int id)
+        {
+            var factor = GetSellFactor(id);
+
+            _repository.Delete(factor);
+            _unitOfWork.Commit();
+        }
+
 
         public GetSellFactorDto Get(int id)
         {
@@ -34,6 +45,16 @@ namespace StoreBDD.Services.SellFactors
             };
         }
 
+        public void Update(int id, UpdateSellFactorDto dto)
+        {
+            var factor = GetSellFactor(id);
+
+            factor.DateSold = dto.DateSold;
+            factor.Count = dto.Count;
+
+            _unitOfWork.Commit();
+        }
+
         private int CalculateProfit()
         {
             int profit = 0;
@@ -44,6 +65,18 @@ namespace StoreBDD.Services.SellFactors
             }
 
             return profit;
+        }
+
+        private SellFactor GetSellFactor(int id)
+        {
+            var factor = _repository.GetById(id);
+
+            if (factor == null)
+            {
+                throw new SellFactorNotFoundException();
+            }
+
+            return factor;
         }
     }
 }

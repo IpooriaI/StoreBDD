@@ -8,5 +8,7 @@ namespace StoreBDD.Services.SellFactors.Contracts
         List<GetSellFactorDto> GetAll();
         GetSellFactorDto Get(int id);
         GetProfitDto GetProfit();
+        void Delete(int id);
+        void Update(int id, UpdateSellFactorDto dto);
     }
 }

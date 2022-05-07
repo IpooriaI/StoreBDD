@@ -53,5 +53,15 @@ namespace StoreBDD.Persistence.EF.SellFactors
                    ProductId = _.ProductId,
                }).FirstOrDefault(_ => _.Id == id);
         }
+
+        public SellFactor GetById(int id)
+        {
+            return _dataContext.SellFactors.FirstOrDefault(_ => _.Id ==id);
+        }
+
+        public void Delete(SellFactor factor)
+        {
+            _dataContext.SellFactors.Remove(factor);
+        }
     }
 }
