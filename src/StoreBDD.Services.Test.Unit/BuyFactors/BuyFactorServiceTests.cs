@@ -69,7 +69,7 @@ namespace StoreBDD.Services.Test.Unit.BuyFactors
         {
             var fakeFactorId = 5;
 
-            Action expected =()=> _sut.Delete(fakeFactorId);
+            Action expected = () => _sut.Delete(fakeFactorId);
 
             expected.Should().ThrowExactly<BuyFactorNotFoundException>();
         }
@@ -82,10 +82,10 @@ namespace StoreBDD.Services.Test.Unit.BuyFactors
             var dto = BuyFactorFactory
                 .GenerateUpdateBuyFactorDto(3, DateTime.Now);
 
-            _sut.Update(buyFactor.Id,dto);
+            _sut.Update(buyFactor.Id, dto);
 
             _dataContext.BuyFactors.Should().HaveCount(1);
-            _dataContext.BuyFactors.Should().Contain(_ => _.Count==dto.Count);
+            _dataContext.BuyFactors.Should().Contain(_ => _.Count == dto.Count);
             _dataContext.BuyFactors.Should()
                 .Contain(_ => _.DateBought == dto.DateBought);
         }
@@ -95,9 +95,9 @@ namespace StoreBDD.Services.Test.Unit.BuyFactors
         {
             var fakeFactorId = 5;
             var dto = BuyFactorFactory
-                .GenerateUpdateBuyFactorDto(1,DateTime.Now);
+                .GenerateUpdateBuyFactorDto(1, DateTime.Now);
 
-            Action expected = () => _sut.Update(fakeFactorId,dto);
+            Action expected = () => _sut.Update(fakeFactorId, dto);
 
             expected.Should().ThrowExactly<BuyFactorNotFoundException>();
         }

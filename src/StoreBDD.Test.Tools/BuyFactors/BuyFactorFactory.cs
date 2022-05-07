@@ -32,7 +32,7 @@ namespace StoreBDD.Test.Tools.BuyFactors
         }
 
         public static UpdateBuyFactorDto GenerateUpdateBuyFactorDto(int count
-            ,DateTime date)
+            , DateTime date)
         {
             return new UpdateBuyFactorDto
             {

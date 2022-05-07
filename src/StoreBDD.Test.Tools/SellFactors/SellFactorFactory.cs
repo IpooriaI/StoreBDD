@@ -36,7 +36,7 @@ namespace StoreBDD.Test.Tools.SellFactors
         {
             return new UpdateSellFactorDto
             {
-                DateSold= date.Date,
+                DateSold = date.Date,
                 Count = count
             };
         }

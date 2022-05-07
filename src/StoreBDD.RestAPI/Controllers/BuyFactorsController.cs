@@ -34,9 +34,9 @@ namespace StoreBDD.RestAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Update(int id,UpdateBuyFactorDto dto)
+        public void Update(int id, UpdateBuyFactorDto dto)
         {
-            _service.Update(id,dto);
+            _service.Update(id, dto);
         }
     }
 }
