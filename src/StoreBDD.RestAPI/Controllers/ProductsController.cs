@@ -20,6 +20,12 @@ namespace StoreBDD.RestAPI.Controllers
             _service.Add(dto);
         }
 
+        [HttpGet("{id}")]
+        public GetProductDto Get(int id)
+        {
+            return _service.Get(id);
+        }
+
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
@@ -32,13 +38,13 @@ namespace StoreBDD.RestAPI.Controllers
             _service.Update(id, dto);
         }
 
-        [HttpPut("{id}/sell")]
+        [HttpPatch("{id}/sell")]
         public UpdateResponseDto Sell(int id, SellProductDto dto)
         {
             return _service.Sell(id, dto);
         }
 
-        [HttpPut("{id}/buy")]
+        [HttpPatch("{id}/buy")]
         public void Buy(int id, BuyProductDto dto)
         {
             _service.Buy(id, dto);
