@@ -1,16 +1,17 @@
 ﻿using StoreBDD.Entities;
 using StoreBDD.Infrastructure.Application;
+using System.Threading.Tasks;
 
 namespace StoreBDD.Services.Products.Contracts
 {
     public interface ProductRepository : Repository
     {
-        void Add(Product product);
-        bool CheckName(int categoryId, string name, int ignoreId);
-        bool CheckCategory(int categoryId);
-        bool CheckId(int productId);
-        Product GetById(int id);
-        void Delete(Product product);
-        GetProductDto Get(int id);
+        Task Add(Product product);
+        Task<bool> CheckName(int categoryId, string name, int ignoreId);
+        Task<bool> CheckCategory(int categoryId);
+        Task<bool> CheckId(int productId);
+        Task<Product> GetById(int id);
+        Task Delete(Product product);
+        Task<GetProductDto> Get(int id);
     }
 }

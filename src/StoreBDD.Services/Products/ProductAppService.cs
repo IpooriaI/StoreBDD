@@ -5,6 +5,7 @@ using StoreBDD.Services.Products.Contracts;
 using StoreBDD.Services.Products.Exceptions;
 using StoreBDD.Services.SellFactors.Contracts;
 using System;
+using System.Threading.Tasks;
 
 namespace StoreBDD.Services.Products
 {
@@ -25,7 +26,7 @@ namespace StoreBDD.Services.Products
             _buyFactorRepository = buyFactorRepository;
         }
 
-        public void Add(AddProductDto dto)
+        public async Task Add(AddProductDto dto)
         {
             var product = new Product
             {
@@ -41,51 +42,51 @@ namespace StoreBDD.Services.Products
             CheckIfIdIsDuplicate(product.Id);
             CheckIfCategoryExists(product.CategoryId);
 
-            _repository.Add(product);
-            _unitOfWork.Commit();
+            await _repository.Add(product);
+            await _unitOfWork.Commit();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var product = GetProduct(id);
+            var product = await GetProduct(id);
 
-            _repository.Delete(product);
-            _unitOfWork.Commit();
+            await _repository.Delete(product);
+            await _unitOfWork.Commit();
         }
 
-        public GetProductDto Get(int id)
+        public async Task<GetProductDto> Get(int id)
         {
-            return _repository.Get(id);
+            return await _repository.Get(id);
         }
 
-        public UpdateResponseDto Sell(int id, SellProductDto dto)
+        public async Task<UpdateResponseDto> Sell(int id, SellProductDto dto)
         {
-            var product = GetProduct(id);
+            var product = await GetProduct(id);
 
-            CheckIfProductCountIsEnough(product.Count, dto.SoldCount);
+            await CheckIfProductCountIsEnough(product.Count, dto.SoldCount);
             product.Count -= dto.SoldCount;
-            CreateSellFactor(dto.SoldCount, product.Id);
+            await CreateSellFactor(dto.SoldCount, product.Id);
             var updateResponse =
                 CreateUpdateResponse(product.Count, product.MinimumCount);
 
-            _unitOfWork.Commit();
+            await _unitOfWork.Commit();
             return updateResponse;
         }
 
-        public void Buy(int id, BuyProductDto dto)
+        public async Task Buy(int id, BuyProductDto dto)
         {
-            var product = GetProduct(id);
+            var product = await GetProduct(id);
             product.Count += dto.BoughtCount;
             CreateBuyFactor(dto.BoughtCount, product.Id);
 
-            _unitOfWork.Commit();
+            await _unitOfWork.Commit();
         }
 
-        public void Update(int id, UpdateProductDto dto)
+        public async Task Update(int id, UpdateProductDto dto)
         {
-            var product = GetProduct(id);
+            var product = await GetProduct(id);
 
-            CheckIfNameIsDuplicate(product.CategoryId, dto.Name, product.Id);
+            await CheckIfNameIsDuplicate(product.CategoryId, dto.Name, product.Id);
             CheckIfCategoryExists(dto.CategoryId);
 
             product.Name = dto.Name;
@@ -94,12 +95,12 @@ namespace StoreBDD.Services.Products
             product.Price = dto.Price;
             product.CategoryId = dto.CategoryId;
 
-            _unitOfWork.Commit();
+            await _unitOfWork.Commit();
         }
 
-        private Product GetProduct(int id)
+        private async Task<Product> GetProduct(int id)
         {
-            var product = _repository.GetById(id);
+            var product = await _repository.GetById(id);
 
             if (product == null)
             {
@@ -109,7 +110,7 @@ namespace StoreBDD.Services.Products
             return product;
         }
 
-        private void CreateSellFactor(int soldCount, int productId)
+        private async Task CreateSellFactor(int soldCount, int productId)
         {
             var sellFactor = new SellFactor
             {
@@ -118,10 +119,10 @@ namespace StoreBDD.Services.Products
                 DateSold = DateTime.Now.Date,
             };
 
-            _sellFactorRepository.Add(sellFactor);
+            await _sellFactorRepository.Add(sellFactor);
         }
 
-        private void CreateBuyFactor(int boughtCount, int productId)
+        private async void CreateBuyFactor(int boughtCount, int productId)
         {
             var buyFactor = new BuyFactor
             {
@@ -130,21 +131,21 @@ namespace StoreBDD.Services.Products
                 DateBought = DateTime.Now.Date,
             };
 
-            _buyFactorRepository.Add(buyFactor);
+            await _buyFactorRepository.Add(buyFactor);
         }
 
-        private void CheckIfNameIsDuplicate(int categoryId, string productName
-            , int ignoreId = 0)
+        private async Task CheckIfNameIsDuplicate(int categoryId, 
+            string productName, int ignoreId = 0)
         {
-            if (_repository.CheckName(categoryId, productName, ignoreId))
+            if (await _repository.CheckName(categoryId, productName, ignoreId))
             {
                 throw new DuplicateProductNameInSameCategoryException();
             }
         }
 
-        private void CheckIfIdIsDuplicate(int productId)
+        private async void CheckIfIdIsDuplicate(int productId)
         {
-            if (_repository.CheckId(productId))
+            if (await _repository.CheckId(productId))
             {
                 throw new DuplicateProductIdException();
             }
@@ -158,9 +159,9 @@ namespace StoreBDD.Services.Products
             }
         }
 
-        private void CheckIfCategoryExists(int categoryId)
+        private async void CheckIfCategoryExists(int categoryId)
         {
-            var checkCategory = _repository.CheckCategory(categoryId);
+            var checkCategory = await _repository.CheckCategory(categoryId);
 
             if (!checkCategory)
             {

@@ -1,7 +1,9 @@
-﻿namespace StoreBDD.Infrastructure.Application
+﻿using System.Threading.Tasks;
+
+namespace StoreBDD.Infrastructure.Application
 {
     public interface UnitOfWork
     {
-        void Commit();
+        Task Commit();
     }
 }

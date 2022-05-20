@@ -1,6 +1,8 @@
-﻿using StoreBDD.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using StoreBDD.Entities;
 using StoreBDD.Services.Products.Contracts;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace StoreBDD.Persistence.EF.Products
 {
@@ -13,36 +15,38 @@ namespace StoreBDD.Persistence.EF.Products
             _dataContext = dataContext;
         }
 
-        public void Add(Product product)
+        public async Task Add(Product product)
         {
-            _dataContext.Products.Add(product);
+           await _dataContext.Products.AddAsync(product);
         }
 
-        public bool CheckCategory(int categoryId)
+        public async Task<bool> CheckCategory(int categoryId)
         {
-            return _dataContext.Categories.Any(_ => _.Id == categoryId);
+            return await _dataContext.Categories
+                .AnyAsync(_ => _.Id == categoryId);
         }
 
-        public bool CheckId(int productId)
+        public async Task<bool> CheckId(int productId)
         {
-            return _dataContext.Products.Any(_ => _.Id == productId);
+            return await _dataContext.Products.AnyAsync(_ => _.Id == productId);
         }
 
-        public bool CheckName(int categoryId, string name, int ignoreId)
+        public async Task<bool> CheckName(int categoryId, 
+            string name, int ignoreId)
         {
-            return _dataContext.Products
+            return await _dataContext.Products
                 .Where(_ => _.CategoryId == categoryId && _.Id != ignoreId)
-                .Any(_ => _.Name == name);
+                .AnyAsync(_ => _.Name == name);
         }
 
-        public void Delete(Product product)
+        public async Task Delete(Product product)
         {
             _dataContext.Products.Remove(product);
         }
 
-        public GetProductDto Get(int id)
+        public async Task<GetProductDto> Get(int id)
         {
-            return _dataContext.Products
+            return await _dataContext.Products
                 .Where(_ => _.Id == id)
                 .Select(_ => new GetProductDto
                 {
@@ -51,12 +55,13 @@ namespace StoreBDD.Persistence.EF.Products
                     Count = _.Count,
                     MinimumCount = _.MinimumCount,
                     Price = _.Price
-                }).FirstOrDefault();
+                }).FirstOrDefaultAsync();
         }
 
-        public Product GetById(int id)
+        public async Task<Product> GetById(int id)
         {
-            return _dataContext.Products.FirstOrDefault(p => p.Id == id);
+            return await _dataContext.Products
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

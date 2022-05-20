@@ -1,4 +1,5 @@
 ﻿using StoreBDD.Infrastructure.Application;
+using System.Threading.Tasks;
 
 namespace StoreBDD.Persistence.EF
 {
@@ -10,9 +11,9 @@ namespace StoreBDD.Persistence.EF
             _dataContext = dataConext;
         }
 
-        public void Commit()
+        public async Task Commit()
         {
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
         }
     }
 }

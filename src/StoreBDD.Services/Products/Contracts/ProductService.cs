@@ -1,14 +1,15 @@
 ﻿using StoreBDD.Infrastructure.Application;
+using System.Threading.Tasks;
 
 namespace StoreBDD.Services.Products.Contracts
 {
     public interface ProductService : Service
     {
-        void Add(AddProductDto dto);
-        void Update(int id, UpdateProductDto dto);
-        void Delete(int id);
-        GetProductDto Get(int id);
-        UpdateResponseDto Sell(int id, SellProductDto dto);
-        void Buy(int id, BuyProductDto dto);
+        Task Add(AddProductDto dto);
+        Task Update(int id, UpdateProductDto dto);
+        Task Delete(int id);
+        Task<GetProductDto> Get(int id);
+        Task<UpdateResponseDto> Sell(int id, SellProductDto dto);
+        Task Buy(int id, BuyProductDto dto);
     }
 }
